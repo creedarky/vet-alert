@@ -18,7 +18,7 @@
       "babel": true,
       "flow": false,
       "html": true,
-      "stylus": true,
+      "sass": true,
       "uirouter": true,
       "bootstrap": true,
       "uibootstrap": true,
@@ -54,7 +54,7 @@
       "babel",
       "js",
       "html",
-      "styl"
+      "scss"
     ],
     "directiveSimpleTemplates": "",
     "directiveComplexTemplates": "",

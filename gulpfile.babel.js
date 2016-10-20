@@ -32,8 +32,8 @@ const paths = {
         scripts: [
             `${clientPath}/**/!(*.spec|*.mock).js`
         ],
-        styles: [`${clientPath}/{app,components}/**/*.styl`],
-        mainStyle: `${clientPath}/app/app.styl`,
+        styles: [`${clientPath}/{app,components}/**/*.scss`],
+        mainStyle: `${clientPath}/app/app.scss`,
         views: `${clientPath}/{app,components}/**/*.html`,
         mainView: `${clientPath}/index.html`,
         test: [`${clientPath}/{app,components}/**/*.{spec,mock}.js`],
@@ -189,23 +189,21 @@ gulp.task('env:prod', () => {
  ********************/
 
 gulp.task('inject', cb => {
-    runSequence(['inject:styl'], cb);
+    runSequence(['inject:scss'], cb);
 });
 
-gulp.task('inject:styl', () => {
+gulp.task('inject:scss', () => {
     return gulp.src(paths.client.mainStyle)
         .pipe(plugins.inject(
             gulp.src(_.union(paths.client.styles, ['!' + paths.client.mainStyle]), {read: false})
                 .pipe(plugins.sort()),
             {
-                starttag: '/* inject:styl */',
-                endtag: '/* endinject */',
                 transform: (filepath) => {
                     let newPath = filepath
                         .replace(`/${clientPath}/app/`, '')
                         .replace(`/${clientPath}/components/`, '../components/')
-                        .replace(/_(.*).styl/, (match, p1, offset, string) => p1)
-                        .replace('.styl', '');
+                        .replace(/_(.*).scss/, (match, p1, offset, string) => p1)
+                        .replace('.scss', '');
                     return `@import '${newPath}';`;
                 }
             }))
