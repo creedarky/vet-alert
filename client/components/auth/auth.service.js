@@ -1,3 +1,4 @@
+import _ from 'lodash';
 'use strict';
 
 class _User {
@@ -11,15 +12,15 @@ class _User {
 export function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
   'ngInject';
 
-  var safeCb = Util.safeCb;
-  var currentUser = new _User();
-  var userRoles = appConfig.userRoles || [];
+  const safeCb = Util.safeCb;
+  let currentUser = new _User();
+  const userRoles = appConfig.userRoles || [];
   /**
    * Check if userRole is >= role
    * @param {String} userRole - role of current user
    * @param {String} role - role to check against
    */
-  var hasRole = function(userRole, role) {
+  const hasRole = function(userRole, role) {
     return userRoles.indexOf(userRole) >= userRoles.indexOf(role);
   };
 
@@ -27,7 +28,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     currentUser = User.get();
   }
 
-  var Auth = {
+  const Auth = {
     /**
      * Authenticate user and save token
      *
@@ -115,7 +116,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Promise}
      */
     getCurrentUser(callback) {
-      var value = _.get(currentUser, '$promise') ? currentUser.$promise : currentUser;
+      const value = _.get(currentUser, '$promise') ? currentUser.$promise : currentUser;
 
       return $q.when(value)
         .then(user => {

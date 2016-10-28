@@ -4,7 +4,15 @@
 'use strict';
 
 // import config from './environment';
+const SerialPort = require('serialport');
+const sp = new SerialPort('/dev/tty.usbmodem1421', {
+  baudrate: 9600,
+  parser: SerialPort.parsers.readline('\n')
+}, e => console.log(e));
 
+sp.on('open', function() {
+  console.log('open');
+});
 // When the user disconnects.. perform this
 function onDisconnect(/*socket*/) {}
 
@@ -14,7 +22,19 @@ function onConnect(socket) {
   socket.on('info', data => {
     socket.log(JSON.stringify(data, null, 2));
   });
-
+  sp.on('data', function(data) {
+    console.log(data);
+    const values = data.split(';');
+    socket.emit('data', {
+      temp: parseFloat(values[0]),
+      envTemp: parseFloat(values[1]),
+      pressure: parseFloat(values[2]),
+      heartRate: parseFloat(values[3])
+    });
+    // socket.emit('data', {
+    //   temperature: temp
+    // })
+  });
   // Insert sockets below
   require('../api/thing/thing.socket').register(socket);
 }

@@ -9,9 +9,7 @@ var Thing = sqldb.Thing;
 var User = sqldb.User;
 
 Thing.sync()
-  .then(() => {
-    return Thing.destroy({ where: {} });
-  })
+  .then(() => Thing.destroy({ where: {} }))
   .then(() => {
     Thing.bulkCreate([{
       name: 'Development Tools',
