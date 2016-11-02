@@ -7,15 +7,16 @@ var validatePresenceOf = function(value) {
 };
 
 export default function(sequelize, DataTypes) {
-  var User = sequelize.define('User', {
+  var User = sequelize.define('usuario', {
 
-    _id: {
+    id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    name: DataTypes.STRING,
+    nombre: DataTypes.STRING,
+    apellido: DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
       unique: {
@@ -25,10 +26,6 @@ export default function(sequelize, DataTypes) {
         isEmail: true
       }
     },
-    role: {
-      type: DataTypes.STRING,
-      defaultValue: 'user'
-    },
     password: {
       type: DataTypes.STRING,
       validate: {
@@ -37,8 +34,12 @@ export default function(sequelize, DataTypes) {
     },
     provider: DataTypes.STRING,
     salt: DataTypes.STRING
-
   }, {
+    underscored: true,
+    underscoredAll: true,
+    createdAt: 'fecha_creacion',
+    updatedAt: 'fecha_actualizacion',
+    freezeTableName: true,
 
     /**
      * Virtual Getters
@@ -55,7 +56,7 @@ export default function(sequelize, DataTypes) {
       // Non-sensitive info we'll be putting in the token
       token() {
         return {
-          _id: this._id,
+          id: this.id,
           role: this.role
         };
       }

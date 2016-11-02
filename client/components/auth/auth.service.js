@@ -146,7 +146,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     isLoggedIn(callback) {
       return Auth.getCurrentUser(undefined)
         .then(user => {
-          let is = _.get(user, 'role');
+          let is = _.get(user, 'rol');
 
           safeCb(callback)(is);
           return is;
@@ -159,7 +159,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Bool}
      */
     isLoggedInSync() {
-      return !!_.get(currentUser, 'role');
+      return !!_.get(currentUser, 'email');
     },
 
     /**

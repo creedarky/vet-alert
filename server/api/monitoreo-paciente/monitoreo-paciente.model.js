@@ -1,0 +1,25 @@
+'use strict';
+
+export default function(sequelize, DataTypes) {
+  return sequelize.define('monitoreo_paciente', {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    promedioTemperatura: DataTypes.FLOAT,
+    promedioPpm: DataTypes.FLOAT,
+    promedioMovHora: DataTypes.FLOAT,
+    estadoTemperatura: DataTypes.FLOAT,
+    estadoMovimiento: DataTypes.STRING,
+    estadoPaciente: DataTypes.STRING,
+    fecha: DataTypes.DATE
+  }, {
+    underscored: true,
+    underscoredAll: true,
+    createdAt: 'fecha_creacion',
+    updatedAt: 'fecha_actualizacion',
+    freezeTableName: true,
+  });
+}

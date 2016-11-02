@@ -5,8 +5,11 @@
 
 'use strict';
 import sqldb from '../sqldb';
-var Thing = sqldb.Thing;
-var User = sqldb.User;
+const Thing = sqldb.Thing;
+const User = sqldb.User;
+const Rol = sqldb.Rol;
+const Permiso = sqldb.Permiso;
+const RolPermiso = sqldb.RolPermiso;
 
 Thing.sync()
   .then(() => Thing.destroy({ where: {} }))
@@ -41,22 +44,90 @@ Thing.sync()
     }]);
   });
 
-User.sync()
-  .then(() => User.destroy({ where: {} }))
+const permisoPromise = Permiso.sync()
+  .then(() => Permiso.destroy({where: {}}))
   .then(() => {
-    User.bulkCreate([{
-      provider: 'local',
-      name: 'Test User',
-      email: 'test@example.com',
-      password: 'test'
+    return Permiso.bulkCreate([{
+      id: 1,
+      descripcion: 'usuario'
     }, {
-      provider: 'local',
-      role: 'admin',
-      name: 'Admin',
-      email: 'admin@example.com',
-      password: 'admin'
+      id: 2,
+      descripcion: 'jaula'
+    }, {
+      id: 3,
+      descripcion: 'paciente'
     }])
-    .then(() => {
-      console.log('finished populating users');
-    });
+  });
+
+const rolPromise = Rol.sync()
+  .then(() => Rol.destroy({where: {}}))
+  .then(() => {
+    return Rol.bulkCreate([{
+      id: 1,
+      descripcion: 'super_admin'
+    }, {
+      id: 2,
+      descripcion: 'admin'
+    }, {
+      id: 3,
+      descripcion: 'usuario'
+    }])
+  })
+
+Promise.all([rolPromise, permisoPromise])
+  .then(() => {
+    RolPermiso.sync()
+      .then(() => RolPermiso.destroy({where: {}}))
+      .then(() => {
+
+        RolPermiso.bulkCreate([{
+          id_rol: 1,
+          id_permiso: 1
+        }, {
+          id_rol: 1,
+          id_permiso: 2
+        }, {
+          id_rol: 1,
+          id_permiso: 3
+        }, {
+          id_rol: 2,
+          id_permiso: 2
+        }, {
+          id_rol: 2,
+          id_permiso: 3
+        }, {
+          id_rol: 3,
+          id_permiso: 3
+        }])
+      });
+
+    User.sync()
+      .then(() => User.destroy({ where: {} }))
+      .then(() => {
+        User.bulkCreate([{
+          provider: 'local',
+          nombre: 'Test',
+          apellido: 'User',
+          email: 'test@example.com',
+          password: 'test',
+          id_rol: 3
+        }, {
+          provider: 'local',
+          nombre: 'Super',
+          apellido: 'Admin',
+          email: 'admin@example.com',
+          password: 'admin',
+          id_rol: 1
+        }, {
+          provider: 'local',
+          nombre: 'Normal',
+          apellido: 'Admin',
+          email: 'admin_normal@example.com',
+          password: 'admin',
+          id_rol: 2
+        }])
+          .then(() => {
+            console.log('finished populating users');
+          });
+      });
   });

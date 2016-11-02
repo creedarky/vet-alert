@@ -1,6 +1,6 @@
 'use strict';
 
-import {User} from '../../sqldb';
+import {User, Rol} from '../../sqldb';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 
@@ -25,11 +25,12 @@ function handleError(res, statusCode) {
 export function index(req, res) {
   return User.findAll({
     attributes: [
-      '_id',
-      'name',
+      'id',
+      'nombre',
+      'apellido',
       'email',
-      'role',
-      'provider'
+      'provider',
+      'idRol'
     ]
   })
     .then(users => {
@@ -47,7 +48,7 @@ export function create(req, res) {
   newUser.setDataValue('role', 'user');
   return newUser.save()
     .then(function(user) {
-      var token = jwt.sign({ _id: user._id }, config.secrets.session, {
+      var token = jwt.sign({ id: user.id }, config.secrets.session, {
         expiresIn: 60 * 60 * 5
       });
       res.json({ token });
@@ -63,7 +64,7 @@ export function show(req, res, next) {
 
   return User.find({
     where: {
-      _id: userId
+      id: userId
     }
   })
     .then(user => {
@@ -80,7 +81,7 @@ export function show(req, res, next) {
  * restriction: 'admin'
  */
 export function destroy(req, res) {
-  return User.destroy({ where: { _id: req.params.id } })
+  return User.destroy({ where: { id: req.params.id } })
     .then(function() {
       res.status(204).end();
     })
@@ -91,13 +92,13 @@ export function destroy(req, res) {
  * Change a users password
  */
 export function changePassword(req, res) {
-  var userId = req.user._id;
+  var userId = req.user.id;
   var oldPass = String(req.body.oldPassword);
   var newPass = String(req.body.newPassword);
 
   return User.find({
     where: {
-      _id: userId
+      id: userId
     }
   })
     .then(user => {
@@ -118,25 +119,32 @@ export function changePassword(req, res) {
  * Get my info
  */
 export function me(req, res, next) {
-  var userId = req.user._id;
+  var userId = req.user.id;
 
   return User.find({
     where: {
-      _id: userId
+      id: userId
     },
     attributes: [
-      '_id',
-      'name',
+      'id',
+      'nombre',
+      'apellido',
       'email',
-      'role',
-      'provider'
+      'provider',
+    ],
+    include: [
+      {model: Rol, as: 'rol'}
     ]
   })
     .then(user => { // don't ever give out the password or salt
       if(!user) {
         return res.status(401).end();
       }
-      res.json(user);
+      user.rol.getPermisos()
+        .then((p) => {
+          user.permisos = p;
+          res.json(user);
+        });
     })
     .catch(err => next(err));
 }

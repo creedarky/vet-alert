@@ -36,7 +36,18 @@ function onConnect(socket) {
     // })
   });
   // Insert sockets below
-  require('../api/thing/thing.socket').register(socket);
+  // require('../api/ciudad/ciudad.socket').register(socket);
+  // require('../api/rol/rol.socket').register(socket);
+  // require('../api/permiso/permiso.socket').register(socket);
+  // require('../api/paciente/paciente.socket').register(socket);
+  // require('../api/monitoreo-paciente/monitoreo-paciente.socket').register(socket);
+  // require('../api/log/log.socket').register(socket);
+  // require('../api/evento/evento.socket').register(socket);
+  // require('../api/estado/estado.socket').register(socket);
+  // require('../api/especie/especie.socket').register(socket);
+  // require('../api/comuna/comuna.socket').register(socket);
+  // require('../api/apoderado/apoderado.socket').register(socket);
+  // require('../api/thing/thing.socket').register(socket);
 }
 
 export default function(socketio) {
