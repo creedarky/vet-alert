@@ -1,22 +1,22 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /api/things              ->  index
- * POST    /api/things              ->  create
- * GET     /api/things/:id          ->  show
- * PUT     /api/things/:id          ->  upsert
- * PATCH   /api/things/:id          ->  patch
- * DELETE  /api/things/:id          ->  destroy
+ * GET     /api/monitors              ->  index
+ * POST    /api/monitors              ->  create
+ * GET     /api/monitors/:id          ->  show
+ * PUT     /api/monitors/:id          ->  upsert
+ * PATCH   /api/monitors/:id          ->  patch
+ * DELETE  /api/monitors/:id          ->  destroy
  */
 
 'use strict';
 
 import jsonpatch from 'fast-json-patch';
-import {Thing} from '../../sqldb';
+import {Monitor} from '../../sqldb';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
   return function(entity) {
-    if(entity) {
+    if (entity) {
       return res.status(statusCode).json(entity);
     }
     return null;
@@ -37,7 +37,7 @@ function patchUpdates(patches) {
 
 function removeEntity(res) {
   return function(entity) {
-    if(entity) {
+    if (entity) {
       return entity.destroy()
         .then(() => {
           res.status(204).end();
@@ -48,7 +48,7 @@ function removeEntity(res) {
 
 function handleEntityNotFound(res) {
   return function(entity) {
-    if(!entity) {
+    if (!entity) {
       res.status(404).end();
       return null;
     }
@@ -63,16 +63,16 @@ function handleError(res, statusCode) {
   };
 }
 
-// Gets a list of Things
+// Gets a list of Monitors
 export function index(req, res) {
-  return Thing.findAll()
+  return Monitor.findAll()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Gets a single Thing from the DB
+// Gets a single Monitor from the DB
 export function show(req, res) {
-  return Thing.find({
+  return Monitor.find({
     where: {
       _id: req.params.id
     }
@@ -82,20 +82,20 @@ export function show(req, res) {
     .catch(handleError(res));
 }
 
-// Creates a new Thing in the DB
+// Creates a new Monitor in the DB
 export function create(req, res) {
-  return Thing.create(req.body)
+  return Monitor.create(req.body)
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }
 
-// Upserts the given Thing in the DB at the specified ID
+// Upserts the given Monitor in the DB at the specified ID
 export function upsert(req, res) {
-  if(req.body._id) {
+  if (req.body._id) {
     delete req.body._id;
   }
 
-  return Thing.upsert(req.body, {
+  return Monitor.upsert(req.body, {
     where: {
       _id: req.params.id
     }
@@ -104,12 +104,12 @@ export function upsert(req, res) {
     .catch(handleError(res));
 }
 
-// Updates an existing Thing in the DB
+// Updates an existing Monitor in the DB
 export function patch(req, res) {
-  if(req.body._id) {
+  if (req.body._id) {
     delete req.body._id;
   }
-  return Thing.find({
+  return Monitor.find({
     where: {
       _id: req.params.id
     }
@@ -120,9 +120,9 @@ export function patch(req, res) {
     .catch(handleError(res));
 }
 
-// Deletes a Thing from the DB
+// Deletes a Monitor from the DB
 export function destroy(req, res) {
-  return Thing.find({
+  return Monitor.find({
     where: {
       _id: req.params.id
     }

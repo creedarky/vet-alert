@@ -15,7 +15,7 @@ describe('Log API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           logs = res.body;
@@ -39,7 +39,7 @@ describe('Log API:', function() {
         .expect(201)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           newLog = res.body;
@@ -62,7 +62,7 @@ describe('Log API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           log = res.body;
@@ -93,7 +93,7 @@ describe('Log API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          if(err) {
+          if (err) {
             return done(err);
           }
           updatedLog = res.body;
@@ -116,7 +116,7 @@ describe('Log API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           let log = res.body;
@@ -142,7 +142,7 @@ describe('Log API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          if(err) {
+          if (err) {
             return done(err);
           }
           patchedLog = res.body;
@@ -166,7 +166,7 @@ describe('Log API:', function() {
         .delete(`/api/logs/${newLog._id}`)
         .expect(204)
         .end(err => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           done();
@@ -178,7 +178,7 @@ describe('Log API:', function() {
         .delete(`/api/logs/${newLog._id}`)
         .expect(404)
         .end(err => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           done();

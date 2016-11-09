@@ -26,7 +26,7 @@ for(var e in events) {
 
 function emitEvent(event) {
   return function(doc, options, done) {
-    ApoderadoEvents.emit(event + ':' + doc._id, doc);
+    ApoderadoEvents.emit(`${event}: + ${doc._id}`, doc);
     ApoderadoEvents.emit(event, doc);
     done(null);
   };

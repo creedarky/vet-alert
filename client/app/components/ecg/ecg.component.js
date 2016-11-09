@@ -1,7 +1,7 @@
 'use strict';
 const angular = require('angular');
 const d3 = require('d3');
-
+/* eslint-disable */
 const data = [
   0, 0, 0, 0, 0.0000050048828125, 0.0000137939453125, 0.000049560546875,
   0.00008740234375, 0.00015966796875, 0.000262451171875, 0.0003975830078125, 0.0005687255859375,
@@ -29,167 +29,166 @@ const data = [
   -0.0057305908203125, -0.0000562744140625
 ];
 
-const getDataPoint = (function () {
+
+const getDataPoint = (function() {
   let _x = -1;
   const _max = data.length;
 
-  return function () {
+  return function() {
     _x = (_x + 1) % _max;
     return { x: Date.now(), y: data[_x] };
   };
 })();
-
+/* eslint-enable */
 
 export class ecgComponent {
   /*@ngInject*/
   constructor($element, $interval) {
     this.message = 'World';
     this.options = {
-
       margin: {
         top: 0,
-          right: 1,
-          bottom: 10,
-          left: 10
+        right: 1,
+        bottom: 10,
+        left: 10
       },
-
       height: 450,
-        width: 600,
+      width: 600,
 
-        xMin: 0,
-        xMax: 3000,
-        xMajorTicks: 1000,
+      xMin: 0,
+      xMax: 3000,
+      xMajorTicks: 1000,
 
-        yMin: -1,
-        yMax: 1.5
+      yMin: -1,
+      yMax: 1.5
     };
     this.$element = $element;
     this.$interval = $interval;
-    console.log($element, d3)
+    console.log($element, d3);
   }
 
   $onInit() {
-    const widget = this;
-
     // Create the SVG element to render the chart into.
-    widget.svg = d3.select(widget.$element[0]).append('svg')
-      .attr('height', widget.options.height)
-      .attr('width', widget.options.width);
+    this.svg = d3.select(this.$element[0]).append('svg')
+      .attr('height', this.options.height)
+      .attr('width', this.options.width);
 
     // Adjust the dimensions to compensate for the margins.
-    widget.options.height = widget.options.height - widget.options.margin.top - widget.options.margin.bottom;
-    widget.options.width = widget.options.width - widget.options.margin.left - widget.options.margin.right;
+    this.options.height = this.options.height - this.options.margin.top - this.options.margin.bottom;
+    this.options.width = this.options.width - this.options.margin.left - this.options.margin.right;
 
 
     // Create a root canvas to put all elements into and move it according to the margins.
     // The extra 0.5 pixels is to avoid blur on retina screens.
-    widget.canvas = widget.svg
+    this.canvas = this.svg
       .append('g')
-      .attr('transform', 'translate(' +
-        (widget.options.margin.left + 0.5) + ',' +
-        (widget.options.margin.top + 0.5) + ')');
+      .attr('transform',
+        `translate(${(this.options.margin.left + 0.5)}, ${this.options.margin.top + 0.5} )`
+      );
 
     // Create a background for the chart area.
-    widget.canvas.call(function (selection) {
-      widget.background = selection.append('rect')
+    this.canvas.call(selection => {
+      this.background = selection.append('rect')
         .classed('jke-ecgChart-background', true)
-        .attr('height', widget.options.height)
-        .attr('width', widget.options.width)
-        .attr('x', 0).attr('y', 0);
+        .attr('height', this.options.height)
+        .attr('width', this.options.width)
+        .attr('x', 0)
+        .attr('y', 0);
     });
 
 
     // Create a scale for the y-coordinates.
-    widget.yScale = d3.scale.linear()
-      .domain([widget.options.yMax, widget.options.yMin])
-      .range([0, widget.options.height]);
+    this.yScale = d3.scale.linear()
+      .domain([this.options.yMax, this.options.yMin])
+      .range([0, this.options.height]);
 
     // Create a scale for x-coordinates.
-    widget.xScale = d3.scale.linear()
-      .domain([widget.options.xMin, widget.options.xMax])
-      .range([0, widget.options.width]);
+    this.xScale = d3.scale.linear()
+      .domain([this.options.xMin, this.options.xMax])
+      .range([0, this.options.width]);
 
 
     // Create the y-axis.
-    widget.yAxisGenerator = d3.svg.axis()
-      .scale(widget.yScale)
+    this.yAxisGenerator = d3.svg.axis()
+      .scale(this.yScale)
       .orient('left')
       .ticks(4)
       .tickFormat('');
-    widget.yAxis = widget.canvas
+    this.yAxis = this.canvas
       .append('g')
       .classed('jke-ecgChart-axis-y', true)
-      .call(widget.yAxisGenerator);
+      .call(this.yAxisGenerator);
 
     // Create a horizontal grid.
-    widget.yGridGenerator = d3.svg.axis()
-      .scale(widget.yScale)
+    this.yGridGenerator = d3.svg.axis()
+      .scale(this.yScale)
       .orient('left')
       .ticks(4)
-      .tickSize(-widget.options.width)
+      .tickSize(-this.options.width)
       .tickFormat('');
-    widget.yGrid = widget.canvas
+    this.yGrid = this.canvas
       .append('g')
       .classed('jke-ecgChart-grid-y', true)
-      .call(widget.yGridGenerator);
+      .call(this.yGridGenerator);
 
 
     // Create the x-axis.
-    widget.xAxisGenerator = d3.svg.axis()
-      .scale(widget.xScale)
+    this.xAxisGenerator = d3.svg.axis()
+      .scale(this.xScale)
       .orient('bottom')
       .ticks(this.options.xMax / this.options.xMajorTicks)
       .tickFormat('');
-    widget.xAxis = widget.canvas
+    this.xAxis = this.canvas
       .append('g')
       .classed('jke-ecgChart-axis-x', true)
-      .attr('transform', 'translate(0,' + widget.options.height + ')')
-      .call(widget.xAxisGenerator);
+      .attr('transform', `translate(0, ${this.options.height})`)
+      .call(this.xAxisGenerator);
 
     // Create a vertical grid.
-    widget.xGridGenerator = d3.svg.axis()
-      .scale(widget.xScale)
+    this.xGridGenerator = d3.svg.axis()
+      .scale(this.xScale)
       .orient('top')
       .ticks(this.options.xMax / this.options.xMajorTicks)
-      .tickSize(-widget.options.height)
+      .tickSize(-this.options.height)
       .tickFormat('');
-    widget.xGrid = widget.canvas
+    this.xGrid = this.canvas
       .append('g')
       .classed('jke-ecgChart-grid-x', true)
-      .call(widget.xGridGenerator);
+      .call(this.xGridGenerator);
 
 
     // Create a clipping mask to make sure that the chart don't escape.
-    widget.svg.call(function (selection) {
-      widget.clipMask = selection
+    this.svg.call(selection => {
+      this.clipMask = selection
         .append('defs')
         .append('svg:clipPath')
         .attr('id', 'ecgChartClip')
         .append('svt:rect')
-        .attr('x', 0).attr('y', 0)
-        .attr('height', widget.options.height)
-        .attr('width', widget.options.width);
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('height', this.options.height)
+        .attr('width', this.options.width);
     });
 
     // Create the line.
-    widget.data = [];
-    widget.lineGenerator = d3.svg.line()
+    this.data = [];
+    this.lineGenerator = d3.svg.line()
       .interpolate('cardinal')
-      .x(function (d) { return widget.xScale(d.x); })
-      .y(function (d) { return widget.yScale(d.y); });
-    widget.line = widget.canvas
+      .x(d => this.xScale(d.x))
+      .y(d => this.yScale(d.y));
+    this.line = this.canvas
       .append('g')
       .attr('clip-path', 'url(#ecgChartClip)')
       .append('path')
-      .datum(widget.data)
+      .datum(this.data)
       .classed('jke-ecgChart-line', true)
-      .attr('d', widget.lineGenerator);
+      .attr('d', this.lineGenerator);
 
-    var heartRate = 60; // bpm
-    var interval = 60 * 1000 / (data.length * heartRate);
+    const heartRate = 60; // bpm
+    const interval = 60 * 1000 / (data.length * heartRate);
 
     this.interval = this.$interval(() => {
-      this.addDataPoint(getDataPoint())
+      this.addDataPoint(getDataPoint());
     }, interval);
   }
 
@@ -199,26 +198,23 @@ export class ecgComponent {
   }
 
   redraw() {
-    const widget = this;
-    widget.line.attr('d', widget.lineGenerator);
+    this.line.attr('d', this.lineGenerator);
   }
 
-  addDataPoint(data) {
-    const widget = this;
-
+  addDataPoint(dataPoint) {
     // Create a point within range.
     const point = {
-      x: data.x % this.options.xMax,
-      y: data.y
+      x: dataPoint.x % this.options.xMax,
+      y: dataPoint.y
     };
 
     // Check if we need to clear the line before starting.
-    if (widget.lastX && widget.lastX > point.x) {
-      widget.data.length = 0;
+    if (this.lastX && this.lastX > point.x) {
+      this.data.length = 0;
     }
-    widget.lastX = point.x;
+    this.lastX = point.x;
 
-    widget.data.push(point);
+    this.data.push(point);
     this.redraw();
   }
 
@@ -226,7 +222,7 @@ export class ecgComponent {
 
 export default angular.module('webappApp.ecg', [])
   .component('ecg', {
-    template: '<h1>Hello {{ $ctrl.message }}</h1>',
+    template: '<div />',
     bindings: { message: '<' },
     controller: ecgComponent
   })

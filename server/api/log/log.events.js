@@ -26,7 +26,7 @@ for(var e in events) {
 
 function emitEvent(event) {
   return function(doc, options, done) {
-    LogEvents.emit(event + ':' + doc._id, doc);
+    LogEvents.emit(`${event}: + ${doc._id}`, doc);
     LogEvents.emit(event, doc);
     done(null);
   };

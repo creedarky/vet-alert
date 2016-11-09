@@ -3,38 +3,36 @@ import uiRouter from 'angular-ui-router';
 import routing from './main.routes';
 
 export class MainController {
-  awesomeThings = [];
-  newThing = '';
+  monitores = [];
 
   /*@ngInject*/
-  constructor($http, $scope, socket) {
-    this.$http = $http;
-    this.socket = socket;
-
-    $scope.$on('$destroy', function() {
-      socket.unsyncUpdates('thing');
-    });
+  constructor(socket, monitorService) {
+    this.socket = socket.socket;
+    this.monitorService = monitorService;
   }
 
   $onInit() {
-    this.$http.get('/api/things')
-      .then(response => {
-        this.awesomeThings = response.data;
-        this.socket.syncUpdates('thing', this.awesomeThings);
-      });
+    this.monitores = this.monitorService.query();
+    console.log(this.monitores);
+
+    this.socket.on('data', data => {
+      try {
+        let parsedData = JSON.parse(data);
+        console.log(parsedData);
+        this.addData(parsedData);
+      } catch(e) {}
+    });
   }
 
-  addThing() {
-    if(this.newThing) {
-      this.$http.post('/api/things', {
-        name: this.newThing
-      });
-      this.newThing = '';
+  addData(data) {
+    console.log('addData');
+    const monitor = this.monitores.find(m => m.id === data.idMonitor)
+    console.log(monitor);
+    if (!monitor) {
+      return;
     }
-  }
-
-  deleteThing(thing) {
-    this.$http.delete(`/api/things/${thing._id}`);
+    monitor[data.tipo] = data;
+    console.log(data);
   }
 }
 

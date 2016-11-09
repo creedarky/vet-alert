@@ -10,7 +10,7 @@ import config from './config/environment';
 import http from 'http';
 
 // Populate databases with sample data
-if(config.seedDB) {
+if (config.seedDB) {
   require('./config/seed');
 }
 
@@ -21,12 +21,22 @@ var socketio = require('socket.io')(server, {
   serveClient: config.env !== 'production',
   path: '/socket.io-client'
 });
-require('./config/socketio').default(socketio);
+
 require('./config/express').default(app);
 require('./routes').default(app);
 
 // Start server
 function startServer() {
+  sqldb.Monitor.update({
+    activo: false
+  }, {
+    where: {
+      id: { $lt: 1000}
+    }
+  }).then(() => {
+    require('./config/socketio').default(socketio);
+  });
+
   app.angularFullstack = server.listen(config.port, config.ip, function() {
     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
   });

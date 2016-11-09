@@ -26,7 +26,7 @@ for(var e in events) {
 
 function emitEvent(event) {
   return function(doc, options, done) {
-    ComunaEvents.emit(event + ':' + doc._id, doc);
+    ComunaEvents.emit(`${event}: + ${doc._id}`, doc);
     ComunaEvents.emit(event, doc);
     done(null);
   };

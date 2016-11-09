@@ -18,6 +18,7 @@ import {
 } from './app.config';
 
 import _Auth from '../components/auth/auth.module';
+import monitorService from './monitorService/monitor.service';
 import account from './account';
 import admin from './admin';
 import navbar from '../components/navbar/navbar.component';
@@ -31,7 +32,7 @@ import socket from '../components/socket/socket.service';
 import './app.scss';
 
 angular.module('webappApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
-    uiBootstrap, _Auth, account, admin, navbar, footer, main, constants, socket, util, ecg
+    uiBootstrap, _Auth, monitorService, account, admin, navbar, footer, main, constants, socket, util, ecg
   ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
@@ -40,7 +41,7 @@ angular.module('webappApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-i
 
     $rootScope.$on('$stateChangeStart', function(event, next) {
       Auth.isLoggedIn(function(loggedIn) {
-        if(next.authenticate && !loggedIn) {
+        if (next.authenticate && !loggedIn) {
           $location.path('/login');
         }
       });

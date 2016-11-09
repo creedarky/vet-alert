@@ -26,7 +26,7 @@ for(var e in events) {
 
 function emitEvent(event) {
   return function(doc, options, done) {
-    PermisoEvents.emit(event + ':' + doc._id, doc);
+    PermisoEvents.emit(`${event}: + ${doc._id}`, doc);
     PermisoEvents.emit(event, doc);
     done(null);
   };

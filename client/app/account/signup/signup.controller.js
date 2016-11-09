@@ -21,7 +21,7 @@ export default class SignupController {
   register(form) {
     this.submitted = true;
 
-    if(form.$valid) {
+    if (form.$valid) {
       return this.Auth.createUser({
         name: this.user.name,
         email: this.user.email,
@@ -36,7 +36,7 @@ export default class SignupController {
           this.errors = {};
 
           // Update validity of form fields that match the sequelize errors
-          if(err.name) {
+          if (err.name) {
             angular.forEach(err.fields, field => {
               form[field].$setValidity('mongoose', false);
               this.errors[field] = err.message;

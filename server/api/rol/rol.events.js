@@ -26,7 +26,7 @@ for(var e in events) {
 
 function emitEvent(event) {
   return function(doc, options, done) {
-    RolEvents.emit(event + ':' + doc._id, doc);
+    RolEvents.emit(`${event}: + ${doc._id}`, doc);
     RolEvents.emit(event, doc);
     done(null);
   };

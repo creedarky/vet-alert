@@ -9,6 +9,7 @@ import path from 'path';
 
 export default function(app) {
   // Insert routes below
+  app.use('/api/monitores', require('./api/monitor'));
   app.use('/api/ciudades', require('./api/ciudad'));
   app.use('/api/roles', require('./api/rol'));
   app.use('/api/rols', require('./api/rol'));
@@ -21,7 +22,6 @@ export default function(app) {
   app.use('/api/especies', require('./api/especie'));
   app.use('/api/comunas', require('./api/comuna'));
   app.use('/api/apoderados', require('./api/apoderado'));
-  app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
 
   app.use('/auth', require('./auth').default);

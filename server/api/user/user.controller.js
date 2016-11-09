@@ -1,6 +1,6 @@
 'use strict';
 
-import {User, Rol} from '../../sqldb';
+import {User, Rol, Permiso} from '../../sqldb';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 
@@ -30,7 +30,6 @@ export function index(req, res) {
       'apellido',
       'email',
       'provider',
-      'idRol'
     ]
   })
     .then(users => {
@@ -68,7 +67,7 @@ export function show(req, res, next) {
     }
   })
     .then(user => {
-      if(!user) {
+      if (!user) {
         return res.status(404).end();
       }
       res.json(user.profile);
@@ -102,7 +101,7 @@ export function changePassword(req, res) {
     }
   })
     .then(user => {
-      if(user.authenticate(oldPass)) {
+      if (user.authenticate(oldPass)) {
         user.password = newPass;
         return user.save()
           .then(() => {
@@ -133,18 +132,19 @@ export function me(req, res, next) {
       'provider',
     ],
     include: [
-      {model: Rol, as: 'rol'}
+      {
+        model: Rol, as: 'rol',
+        include: [
+          Permiso
+        ]
+      }
     ]
   })
     .then(user => { // don't ever give out the password or salt
-      if(!user) {
+      if (!user) {
         return res.status(401).end();
       }
-      user.rol.getPermisos()
-        .then((p) => {
-          user.permisos = p;
-          res.json(user);
-        });
+      res.json(user);
     })
     .catch(err => next(err));
 }

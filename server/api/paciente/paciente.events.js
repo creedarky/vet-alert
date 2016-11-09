@@ -26,7 +26,7 @@ for(var e in events) {
 
 function emitEvent(event) {
   return function(doc, options, done) {
-    PacienteEvents.emit(event + ':' + doc._id, doc);
+    PacienteEvents.emit(`${event}: + ${doc._id}`, doc);
     PacienteEvents.emit(event, doc);
     done(null);
   };

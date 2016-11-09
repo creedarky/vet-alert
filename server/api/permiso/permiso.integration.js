@@ -15,7 +15,7 @@ describe('Permiso API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           permisos = res.body;
@@ -39,7 +39,7 @@ describe('Permiso API:', function() {
         .expect(201)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           newPermiso = res.body;
@@ -62,7 +62,7 @@ describe('Permiso API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           permiso = res.body;
@@ -93,7 +93,7 @@ describe('Permiso API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          if(err) {
+          if (err) {
             return done(err);
           }
           updatedPermiso = res.body;
@@ -116,7 +116,7 @@ describe('Permiso API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           let permiso = res.body;
@@ -142,7 +142,7 @@ describe('Permiso API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          if(err) {
+          if (err) {
             return done(err);
           }
           patchedPermiso = res.body;
@@ -166,7 +166,7 @@ describe('Permiso API:', function() {
         .delete(`/api/permisos/${newPermiso._id}`)
         .expect(204)
         .end(err => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           done();
@@ -178,7 +178,7 @@ describe('Permiso API:', function() {
         .delete(`/api/permisos/${newPermiso._id}`)
         .expect(404)
         .end(err => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           done();

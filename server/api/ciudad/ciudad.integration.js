@@ -15,7 +15,7 @@ describe('Ciudad API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           ciudads = res.body;
@@ -39,7 +39,7 @@ describe('Ciudad API:', function() {
         .expect(201)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           newCiudad = res.body;
@@ -62,7 +62,7 @@ describe('Ciudad API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           ciudad = res.body;
@@ -93,7 +93,7 @@ describe('Ciudad API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          if(err) {
+          if (err) {
             return done(err);
           }
           updatedCiudad = res.body;
@@ -116,7 +116,7 @@ describe('Ciudad API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           let ciudad = res.body;
@@ -142,7 +142,7 @@ describe('Ciudad API:', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          if(err) {
+          if (err) {
             return done(err);
           }
           patchedCiudad = res.body;
@@ -166,7 +166,7 @@ describe('Ciudad API:', function() {
         .delete(`/api/ciudades/${newCiudad._id}`)
         .expect(204)
         .end(err => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           done();
@@ -178,7 +178,7 @@ describe('Ciudad API:', function() {
         .delete(`/api/ciudades/${newCiudad._id}`)
         .expect(404)
         .end(err => {
-          if(err) {
+          if (err) {
             return done(err);
           }
           done();

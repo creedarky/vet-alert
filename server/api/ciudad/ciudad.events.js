@@ -26,7 +26,7 @@ for(var e in events) {
 
 function emitEvent(event) {
   return function(doc, options, done) {
-    CiudadEvents.emit(event + ':' + doc._id, doc);
+    CiudadEvents.emit(`${event}: + ${doc._id}`, doc);
     CiudadEvents.emit(event, doc);
     done(null);
   };

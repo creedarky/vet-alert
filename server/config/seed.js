@@ -10,7 +10,7 @@ const User = sqldb.User;
 const Rol = sqldb.Rol;
 const Permiso = sqldb.Permiso;
 const RolPermiso = sqldb.RolPermiso;
-
+/* eslint-disable */
 Thing.sync()
   .then(() => Thing.destroy({ where: {} }))
   .then(() => {
@@ -52,7 +52,7 @@ const permisoPromise = Permiso.sync()
       descripcion: 'usuario'
     }, {
       id: 2,
-      descripcion: 'jaula'
+      descripcion: 'monitor'
     }, {
       id: 3,
       descripcion: 'paciente'
@@ -131,3 +131,5 @@ Promise.all([rolPromise, permisoPromise])
           });
       });
   });
+
+/*eslint-enable */

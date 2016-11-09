@@ -70,11 +70,11 @@ export default function(sequelize, DataTypes) {
         var totalUpdated = 0;
         users.forEach(user => {
           user.updatePassword(err => {
-            if(err) {
+            if (err) {
               return fn(err);
             }
             totalUpdated += 1;
-            if(totalUpdated === users.length) {
+            if (totalUpdated === users.length) {
               return fn();
             }
           });
@@ -84,7 +84,7 @@ export default function(sequelize, DataTypes) {
         user.updatePassword(fn);
       },
       beforeUpdate(user, fields, fn) {
-        if(user.changed('password')) {
+        if (user.changed('password')) {
           return user.updatePassword(fn);
         }
         fn();
@@ -104,16 +104,16 @@ export default function(sequelize, DataTypes) {
        * @api public
        */
       authenticate(password, callback) {
-        if(!callback) {
+        if (!callback) {
           return this.password === this.encryptPassword(password);
         }
 
         this.encryptPassword(password, (err, pwdGen) => {
-          if(err) {
+          if (err) {
             return callback(err);
           }
 
-          if(this.password === pwdGen) {
+          if (this.password === pwdGen) {
             return callback(null, true);
           }
           return callback(null, false);
@@ -131,21 +131,21 @@ export default function(sequelize, DataTypes) {
       makeSalt(byteSize, callback) {
         var defaultByteSize = 16;
 
-        if(typeof arguments[0] === 'function') {
+        if (typeof arguments[0] === 'function') {
           callback = arguments[0];
           byteSize = defaultByteSize;
-        } else if(typeof arguments[1] === 'function') {
+        } else if (typeof arguments[1] === 'function') {
           callback = arguments[1];
         } else {
           throw new Error('Missing Callback');
         }
 
-        if(!byteSize) {
+        if (!byteSize) {
           byteSize = defaultByteSize;
         }
 
         return crypto.randomBytes(byteSize, function(err, salt) {
-          if(err) {
+          if (err) {
             return callback(err);
           }
           return callback(null, salt.toString('base64'));
@@ -161,7 +161,7 @@ export default function(sequelize, DataTypes) {
        * @api public
        */
       encryptPassword(password, callback) {
-        if(!password || !this.salt) {
+        if (!password || !this.salt) {
           return callback ? callback(null) : null;
         }
 
@@ -169,14 +169,14 @@ export default function(sequelize, DataTypes) {
         var defaultKeyLength = 64;
         var salt = new Buffer(this.salt, 'base64');
 
-        if(!callback) {
+        if (!callback) {
           return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength)
                        .toString('base64');
         }
 
         return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength,
           function(err, key) {
-            if(err) {
+            if (err) {
               return callback(err);
             }
             return callback(null, key.toString('base64'));
@@ -192,20 +192,20 @@ export default function(sequelize, DataTypes) {
        */
       updatePassword(fn) {
         // Handle new/update passwords
-        if(!this.password) return fn(null);
+        if (!this.password) return fn(null);
 
-        if(!validatePresenceOf(this.password)) {
+        if (!validatePresenceOf(this.password)) {
           fn(new Error('Invalid password'));
         }
 
         // Make salt with a callback
         this.makeSalt((saltErr, salt) => {
-          if(saltErr) {
+          if (saltErr) {
             return fn(saltErr);
           }
           this.salt = salt;
           this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
-            if(encryptErr) {
+            if (encryptErr) {
               fn(encryptErr);
             }
             this.password = hashedPassword;

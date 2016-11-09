@@ -2,17 +2,66 @@
  * Socket.io configuration
  */
 'use strict';
+import {Monitor} from '../sqldb';
 
 // import config from './environment';
 const SerialPort = require('serialport');
-const sp = new SerialPort('/dev/tty.usbmodem1421', {
-  baudrate: 9600,
-  parser: SerialPort.parsers.readline('\n')
-}, e => console.log(e));
-
-sp.on('open', function() {
-  console.log('open');
+const ArduinoScanner = require('../scanner');
+var arduinoScanner = new ArduinoScanner({
+  // board: 'mega',
+  // serialNumber: 'AL009RD3',
+  // port: '/dev/cu.usbserial-AL009RD3'
 });
+arduinoScanner.start(10000);
+
+
+// const ArduinoScanner = require('arduino-scanner');
+// const arduinoScanner = new ArduinoScanner({
+//   debug: true
+// });
+//
+// arduinoScanner.start(200);
+// console.log('arduinoStart');
+const sp = {};
+let monitorData = {};
+
+const monitoresActivos = {};
+arduinoScanner.on('arduinoFound', function(response) {
+  console.log('arduinoFound');
+  arduinoScanner.stop();
+  if (sp[response.serialNumber]) {
+    return;
+  }
+  // connectToArduino(response.port);
+  sp[response.serialNumber] = new SerialPort(response.port, {
+    baudrate: 9600,
+    parser: SerialPort.parsers.readline('\n')
+  }, e => console.log(e));
+
+  sp[response.serialNumber].on('open', function() {
+    console.log('open');
+  });
+  sp[response.serialNumber].on('data', function(data) {
+    let parsedData = null;
+    try {
+      parsedData = JSON.parse(data);
+    } catch(e) {
+      return;
+    }
+    if (monitoresActivos[parsedData.idMonitor]) {
+      return;
+    }
+    monitoresActivos[parsedData.idMonitor] = parsedData.idMonitor;
+    Monitor.upsert(
+      {
+        id: parsedData.idMonitor,
+        activo: true
+      }
+    );
+  });
+});
+
+
 // When the user disconnects.. perform this
 function onDisconnect(/*socket*/) {}
 
@@ -22,32 +71,23 @@ function onConnect(socket) {
   socket.on('info', data => {
     socket.log(JSON.stringify(data, null, 2));
   });
-  sp.on('data', function(data) {
-    console.log(data);
-    const values = data.split(';');
-    socket.emit('data', {
-      temp: parseFloat(values[0]),
-      envTemp: parseFloat(values[1]),
-      pressure: parseFloat(values[2]),
-      heartRate: parseFloat(values[3])
+  Object.keys(sp).forEach(key => {
+    sp[key].on('data', function(data) {
+      try {
+        const parsedData = JSON.parse(data);
+        socket.emit('data', parsedData);
+        if (parsedData.tipo !== 'estado') {
+          return;
+        }
+        if (monitorData[parsedData.idMonitor]) {
+          monitorData[parsedData.idMonitor].push(parsedData);
+        } else {
+          monitorData[parsedData.idMonitor] = [parsedData];
+        }
+
+      } catch(e) {}
     });
-    // socket.emit('data', {
-    //   temperature: temp
-    // })
   });
-  // Insert sockets below
-  // require('../api/ciudad/ciudad.socket').register(socket);
-  // require('../api/rol/rol.socket').register(socket);
-  // require('../api/permiso/permiso.socket').register(socket);
-  // require('../api/paciente/paciente.socket').register(socket);
-  // require('../api/monitoreo-paciente/monitoreo-paciente.socket').register(socket);
-  // require('../api/log/log.socket').register(socket);
-  // require('../api/evento/evento.socket').register(socket);
-  // require('../api/estado/estado.socket').register(socket);
-  // require('../api/especie/especie.socket').register(socket);
-  // require('../api/comuna/comuna.socket').register(socket);
-  // require('../api/apoderado/apoderado.socket').register(socket);
-  // require('../api/thing/thing.socket').register(socket);
 }
 
 export default function(socketio) {

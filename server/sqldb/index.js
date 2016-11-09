@@ -17,6 +17,7 @@ const db = {
 };
 
 // Insert models below
+db.Monitor = db.sequelize.import('../api/monitor/monitor.model');
 db.Ciudad = db.sequelize.import('../api/ciudad/ciudad.model');
 db.Rol = db.sequelize.import('../api/rol/rol.model');
 db.Permiso = db.sequelize.import('../api/permiso/permiso.model');
@@ -29,7 +30,6 @@ db.Estado = db.sequelize.import('../api/estado/estado.model');
 db.Especie = db.sequelize.import('../api/especie/especie.model');
 db.Comuna = db.sequelize.import('../api/comuna/comuna.model');
 db.Apoderado = db.sequelize.import('../api/apoderado/apoderado.model');
-db.Thing = db.sequelize.import('../api/thing/thing.model');
 db.User = db.sequelize.import('../api/user/user.model');
 
 db.Apoderado.belongsTo(db.Comuna, {foreignKey: 'id_comuna'});

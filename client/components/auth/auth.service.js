@@ -24,7 +24,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
     return userRoles.indexOf(userRole) >= userRoles.indexOf(role);
   };
 
-  if($cookies.get('token') && $location.path() !== '/logout') {
+  if ($cookies.get('token') && $location.path() !== '/logout') {
     currentUser = User.get();
   }
 
@@ -174,6 +174,16 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
         .then(user => {
           let has = hasRole(_.get(user, 'role'), role);
 
+          safeCb(callback)(has);
+          return has;
+        });
+    },
+
+    hasPermission(permission, callback) {
+      return Auth.getCurrentUser(undefined)
+        .then(user => {
+          const permissions = user.rol.permisos.map(p => p.id);
+          const has = permissions.includes(permission);
           safeCb(callback)(has);
           return has;
         });
