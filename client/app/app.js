@@ -18,14 +18,11 @@ import {
 } from './app.config';
 
 import _Auth from '../components/auth/auth.module';
-import monitorService from './monitorService/monitor.service';
-import account from './account';
-import admin from './admin';
+import services from './services/';
+import views from './views';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
-import ecg from './components/ecg/ecg.component';
-import main from './main/main.component';
-import paciente from './paciente/paciente.component';
+import components from './components/';
 import constants from './app.constants';
 import util from '../components/util/util.module';
 import socket from '../components/socket/socket.service';
@@ -33,7 +30,7 @@ import socket from '../components/socket/socket.service';
 import './app.scss';
 
 angular.module('webappApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
-    uiBootstrap, _Auth, monitorService, account, admin, navbar, footer, main, paciente, constants, socket, util, ecg
+    uiBootstrap, _Auth, services, views, navbar, footer, constants, socket, util, components
   ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

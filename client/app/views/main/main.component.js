@@ -36,7 +36,7 @@ export class MainController {
   }
 }
 
-export default angular.module('webappApp.main', [uiRouter])
+export default angular.module('webappApp.views.main', [uiRouter])
   .config(routing)
   .component('main', {
     template: require('./main.html'),

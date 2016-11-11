@@ -3,6 +3,6 @@
 import angular from 'angular';
 import SettingsController from './settings.controller';
 
-export default angular.module('webappApp.settings', [])
+export default angular.module('webappApp.views.account.settings', [])
   .controller('SettingsController', SettingsController)
   .name;

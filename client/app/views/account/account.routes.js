@@ -22,7 +22,7 @@ export default function routes($stateProvider) {
       }
     })
     .state('signup', {
-      url: '/signup',
+      url: '/create',
       template: require('./signup/signup.html'),
       controller: 'SignupController',
       controllerAs: 'vm'

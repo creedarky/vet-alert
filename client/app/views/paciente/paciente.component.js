@@ -12,7 +12,7 @@ export class PacienteComponent {
   }
 }
 
-export default angular.module('webappApp.paciente', [uiRouter])
+export default angular.module('webappApp.views.paciente', [uiRouter])
   .config(routes)
   .component('paciente', {
     template: require('./paciente.html'),

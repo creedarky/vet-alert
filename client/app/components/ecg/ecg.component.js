@@ -41,7 +41,7 @@ const getDataPoint = (function() {
 })();
 /* eslint-enable */
 
-export class ecgComponent {
+export default class ecgComponent {
   /*@ngInject*/
   constructor($element, $interval) {
     this.message = 'World';
@@ -220,10 +220,3 @@ export class ecgComponent {
 
 }
 
-export default angular.module('webappApp.ecg', [])
-  .component('ecg', {
-    template: '<div />',
-    bindings: { message: '<' },
-    controller: ecgComponent
-  })
-  .name;

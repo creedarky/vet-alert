@@ -2,7 +2,7 @@
 const angular = require('angular');
 
 /*@ngInject*/
-export function monitorService($resource) {
+export default function monitorService($resource) {
   'ngInject';
 
   return $resource('/api/monitores/:id/:controller', {
@@ -12,6 +12,3 @@ export function monitorService($resource) {
   });
 }
 
-export default angular.module('webappApp.monitorService', [])
-  .factory('monitorService', monitorService)
-  .name;

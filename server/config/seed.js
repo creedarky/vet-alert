@@ -2,11 +2,11 @@
  * Populate DB with sample data on server start
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
+/* eslint-disable */
 
 'use strict';
 import sqldb from '../sqldb';
-const { Especie, Apoderado, Paciente } = sqldb;
-/* eslint-disable */
+const { Especie, Apoderado, Paciente, User } = sqldb;
 //
 // const permisoPromise = Permiso.sync()
 //   .then(() => Permiso.destroy({where: {}}))
@@ -161,6 +161,35 @@ const { Especie, Apoderado, Paciente } = sqldb;
 //       });
 //   });
 
+User.sync()
+  .then(() => User.destroy({ where: {} }))
+  .then(() => {
+    const users = [{
+      provider: 'local',
+      nombre: 'Test',
+      apellido: 'User',
+      email: 'test@example.com',
+      password: 'test',
+      id_rol: 3
+    }, {
+      provider: 'local',
+      nombre: 'Super',
+      apellido: 'Admin',
+      email: 'admin@example.com',
+      password: 'admin',
+      id_rol: 1
+    }, {
+      provider: 'local',
+      nombre: 'Normal',
+      apellido: 'Admin',
+      email: 'admin_normal@example.com',
+      password: 'admin',
+      id_rol: 2
+    }];
+    User.bulkCreate(users);
+    // const promises = users.map((u) => User.upsert(u));
+    // return Promise.all(promises)
+  });
 
 
 /*eslint-enable */

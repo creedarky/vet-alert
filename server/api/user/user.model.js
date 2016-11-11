@@ -67,6 +67,7 @@ export default function(sequelize, DataTypes) {
      */
     hooks: {
       beforeBulkCreate(users, fields, fn) {
+        console.log('beforeBulCreated');
         var totalUpdated = 0;
         users.forEach(user => {
           user.updatePassword(err => {
@@ -83,12 +84,17 @@ export default function(sequelize, DataTypes) {
       beforeCreate(user, fields, fn) {
         user.updatePassword(fn);
       },
+      beforeUpsert(user, fields, fn) {
+        console.log('beforeUpsert', user);
+        return user.updatePassword(fn);
+      },
       beforeUpdate(user, fields, fn) {
         if (user.changed('password')) {
           return user.updatePassword(fn);
         }
         fn();
-      }
+      },
+
     },
 
     /**
@@ -208,6 +214,7 @@ export default function(sequelize, DataTypes) {
             if (encryptErr) {
               fn(encryptErr);
             }
+            console.log(this.salt, this.password, hashedPassword);;
             this.password = hashedPassword;
             fn(null);
           });
