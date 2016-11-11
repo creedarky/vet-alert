@@ -42,6 +42,7 @@ arduinoScanner.on('arduinoFound', function(response) {
     console.log('open');
   });
   sp[response.serialNumber].on('data', function(data) {
+    console.log(data);
     let parsedData = null;
     try {
       parsedData = JSON.parse(data);

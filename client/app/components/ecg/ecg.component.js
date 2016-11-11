@@ -184,17 +184,21 @@ export default class ecgComponent {
       .classed('jke-ecgChart-line', true)
       .attr('d', this.lineGenerator);
 
-    const heartRate = 60; // bpm
-    const interval = 60 * 1000 / (data.length * heartRate);
+    // const heartRate = 60; // bpm
+    // const interval = 60 * 1000 / (data.length * heartRate);
 
-    this.interval = this.$interval(() => {
-      this.addDataPoint(getDataPoint());
-    }, interval);
+    // this.interval = this.$interval(() => {
+    //   this.addDataPoint(getDataPoint());
+    // }, interval);
   }
 
   $onDestroy() {
     this.$element.remove('svg');
     this.$interval.cancel(this.interval);
+  }
+
+  $onChanges(dataPoint) {
+    this.addDataPoint(dataPoint)
   }
 
   redraw() {
