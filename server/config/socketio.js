@@ -14,6 +14,8 @@ var arduinoScanner = new ArduinoScanner({
 });
 console.log('inicia arduino scanner');
 arduinoScanner.start(10000);
+const isWin = os.platform() === 'win32';
+const prefix = isWin ? '\\\\.\\' : '';
 
 
 // const ArduinoScanner = require('arduino-scanner');
@@ -34,7 +36,7 @@ arduinoScanner.on('arduinoFound', function(response) {
     return;
   }
   // connectToArduino(response.port);
-  sp[response.serialNumber] = new SerialPort(response.port, {
+  sp[response.serialNumber] = new SerialPort(`${prefix}${response.port}, {
     baudrate: 9600,
     parser: SerialPort.parsers.readline('\n')
   }, e => console.log(e));
