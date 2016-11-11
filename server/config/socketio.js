@@ -7,6 +7,7 @@ import {Monitor} from '../sqldb';
 // import config from './environment';
 const SerialPort = require('serialport');
 const ArduinoScanner = require('../scanner');
+const os = require('os');
 var arduinoScanner = new ArduinoScanner({
   // board: 'mega',
   // serialNumber: 'AL009RD3',
