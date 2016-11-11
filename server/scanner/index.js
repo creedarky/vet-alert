@@ -71,8 +71,9 @@ var ArduinoScanner = function(opts) {
         if (self.options.serialNumber) {
           matched = matched && port.serialNumber === self.options.serialNumber;
         }
-
-        if (port.productId){
+        if (port.manufacturer && port.manufacturer.toLowerCase().includes('arduino')) {
+          matched = true
+        } else if (port.productId){
           matched = matched && port.productId in boards;
           if (self.options.board) {
             matched = matched && boards[port.productId].indexOf(self.options.board) !== -1;
