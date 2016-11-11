@@ -12,6 +12,7 @@ var arduinoScanner = new ArduinoScanner({
   // serialNumber: 'AL009RD3',
   // port: '/dev/cu.usbserial-AL009RD3'
 });
+console.log('inicia arduino scanner');
 arduinoScanner.start(10000);
 
 

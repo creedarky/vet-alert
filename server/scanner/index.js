@@ -60,7 +60,7 @@ var ArduinoScanner = function(opts) {
         });
         return;
       }
-
+      console.log(ports);
       const arduinos = ports.filter(function(port) {
         let matched = true;
 
