@@ -84,8 +84,7 @@ function onConnect(socket) {
         } else {
           monitorData[parsedData.idMonitor] = [parsedData];
         }
-
-      } catch(e) {}
+      } catch(e) {} // eslint-disable-line
     });
   });
 }

@@ -10,7 +10,8 @@ export default function(sequelize, DataTypes) {
     },
     nombre: DataTypes.STRING,
     apellido: DataTypes.STRING,
-    direccion: DataTypes.STRING
+    direccion: DataTypes.STRING,
+    telefono: DataTypes.STRING
   }, {
     underscored: true,
     underscoredAll: true,

@@ -2,14 +2,14 @@
 
 export default function(sequelize, DataTypes) {
   return sequelize.define('especie', {
-    _id: {
+    id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
     nombre: DataTypes.STRING,
-    sexo: DataTypes.CHAR,
+    nombre_comun: DataTypes.STRING,
     minPpm: DataTypes.INTEGER,
     maxPpm: DataTypes.INTEGER,
     minTemp: DataTypes.FLOAT,

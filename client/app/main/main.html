@@ -1,7 +1,7 @@
-<div class="container">
+<div class="Main">
 
-  <div class="col-md-4" ng-repeat="monitor in $ctrl.monitores">
-    ECG: {{ monitor.ecg.valor }} <br>
+  <div class="Main Monitor" ng-repeat="monitor in $ctrl.monitores">
+    <div>ECG: {{ monitor.ecg.valor }} </div>
     Signos Vitales:
     <div>
       Temperatura: {{monitor.signosVitales.temperatura}}

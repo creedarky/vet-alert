@@ -12,7 +12,6 @@ export default function(sequelize, DataTypes) {
     annoNacimiento: DataTypes.INTEGER,
     carnet: DataTypes.INTEGER,
     sexo: DataTypes.CHAR,
-    direccion: DataTypes.STRING
   }, {
     underscored: true,
     underscoredAll: true,

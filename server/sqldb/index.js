@@ -26,7 +26,6 @@ db.Paciente = db.sequelize.import('../api/paciente/paciente.model');
 db.MonitoreoPaciente = db.sequelize.import('../api/monitoreo-paciente/monitoreo-paciente.model');
 db.Log = db.sequelize.import('../api/log/log.model');
 db.Evento = db.sequelize.import('../api/evento/evento.model');
-db.Estado = db.sequelize.import('../api/estado/estado.model');
 db.Especie = db.sequelize.import('../api/especie/especie.model');
 db.Comuna = db.sequelize.import('../api/comuna/comuna.model');
 db.Apoderado = db.sequelize.import('../api/apoderado/apoderado.model');
@@ -36,11 +35,11 @@ db.Apoderado.belongsTo(db.Comuna, {foreignKey: 'id_comuna'});
 db.Comuna.belongsTo(db.Ciudad, {foreignKey: 'id_ciudad'});
 db.Paciente.belongsTo(db.Apoderado, {foreignKey: 'id_apoderado'});
 db.Paciente.belongsTo(db.Especie, {foreignKey: 'id_especie'});
+db.Paciente.belongsTo(db.Monitor, {foreignKey: 'id_monitor'});
 db.Log.belongsTo(db.Evento, {foreignKey: 'id_evento'});
 db.Log.belongsTo(db.User, {foreignKey: 'id_usuario'});
 db.Log.belongsTo(db.Paciente, {foreignKey: 'id_paciente'});
 db.User.belongsTo(db.Rol, {foreignKey: 'id_rol'});
-db.User.belongsTo(db.Estado, {foreignKey: 'id_estado'});
 db.MonitoreoPaciente.belongsTo(db.Paciente, {foreignKey: 'id_paciente'});
 
 db.Rol.belongsToMany(db.Permiso, {

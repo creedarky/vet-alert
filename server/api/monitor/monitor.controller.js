@@ -65,7 +65,9 @@ function handleError(res, statusCode) {
 
 // Gets a list of Monitors
 export function index(req, res) {
-  return Monitor.findAll()
+  return Monitor.findAll({
+
+  })
     .then(respondWithResult(res))
     .catch(handleError(res));
 }

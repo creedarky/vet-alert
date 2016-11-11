@@ -20,13 +20,13 @@ export class MainController {
         let parsedData = JSON.parse(data);
         console.log(parsedData);
         this.addData(parsedData);
-      } catch(e) {}
+      } catch(e) {} // eslint-disable-line
     });
   }
 
   addData(data) {
     console.log('addData');
-    const monitor = this.monitores.find(m => m.id === data.idMonitor)
+    const monitor = this.monitores.find(m => m.id === data.idMonitor);
     console.log(monitor);
     if (!monitor) {
       return;
