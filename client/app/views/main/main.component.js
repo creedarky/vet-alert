@@ -17,10 +17,11 @@ export class MainController {
 
     this.socket.on('data', data => {
       try {
-        let parsedData = JSON.parse(data);
-        console.log(parsedData);
-        this.addData(parsedData);
-      } catch(e) {} // eslint-disable-line
+        console.log(data);
+        this.addData(data);
+      } catch(e) {
+        console.log(e);
+      } // eslint-disable-line
     });
   }
 

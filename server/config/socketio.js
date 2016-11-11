@@ -73,6 +73,7 @@ function onConnect(socket) {
   });
   Object.keys(sp).forEach(key => {
     sp[key].on('data', function(data) {
+      // console.log(data);
       try {
         const parsedData = JSON.parse(data);
         socket.emit('data', parsedData);
@@ -106,6 +107,7 @@ export default function(socketio) {
   // }));
 
   socketio.on('connection', function(socket) {
+    console.log('connection');
     socket.address = `${socket.request.connection.remoteAddress}:${socket.request.connection.remotePort}`;
 
     socket.connectedAt = new Date();
