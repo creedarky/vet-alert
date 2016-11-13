@@ -19,7 +19,7 @@
             </div>
             <div class="col-sm-8">
               <div>Actual: {{ pacienteCtrl.paciente.estado.latidos }}</div>
-              <div>Promedio:</div>
+              <div>Promedio: {{ pacienteCtrl.paciente.estado.promedioPpm | number : 0 }}</div>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
             </div>
             <div class="col-sm-8">
               <div>Actual: {{ pacienteCtrl.paciente.estado.temperatura }}</div>
-              <div>Promedio:</div>
+              <div>Promedio: {{ pacienteCtrl.paciente.estado.promedioTemp | number : 1 }}</div>
             </div>
           </div>
         </div>

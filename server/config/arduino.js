@@ -37,23 +37,11 @@ export default function(socketio, cache) {
       socketio.sockets.emit('data', data);
       return;
     }
-    let paciente = {};
 
-    if (monitorData[data.idMonitor]) {
-      paciente = monitorData[data.idMonitor].paciente;
-      monitorData[data.idMonitor].data.push(data);
-    } else {
-      paciente = pacientes.find(p => {
-        console.log('### monitor#', p, p.monitor);
-        return p.monitor.id === data.idMonitor
-      });
-      monitorData[data.idMonitor] = {
-        paciente: paciente,
-        data: [data]
-      };
-    }
+    let monitor = getMonitor(data);
+    let paciente = monitor.paciente;
 
-    const margen = checkStatus(data, paciente.especie);
+    const margen = revisarStatus(data, paciente.especie);
 
     let estado = 'ok';
     if (margen > 1) { // TODO definir el porcentaje
@@ -63,10 +51,50 @@ export default function(socketio, cache) {
     }
     data.estado = estado;
     data.idPaciente = paciente.id;
+    data.promedioTemp = monitor.promedioTemp;
+    data.promedioPpm = monitor.promedioPpm;
     socketio.sockets.emit('data', data);
   };
 
-  const checkStatus = (data, especie) => {
+  const getMonitor = (data) => {
+    let monitor;
+    if (monitorData[data.idMonitor]) {
+      monitor = monitorData[data.idMonitor];
+      monitor.data.push(data);
+      if (monitor.data.length >= 20) {
+        const { data } = monitor;
+        const promedios = calcularPromedio(data);
+        monitor = Object.assign({}, monitor, promedios);
+      }
+    } else {
+      let paciente = pacientes.find(p => {
+        return p.monitor.id === data.idMonitor
+      });
+      monitorData[data.idMonitor] = {
+        paciente: paciente,
+        data: [data],
+        promedioTemp: data.temperatura,
+        promedioPpm: data.latidos
+      };
+      monitor = monitorData[data.idMonitor];
+    }
+    return monitor
+  };
+
+  const calcularPromedio = (data) => {
+    let totalLatidos = data
+      .map(d => d.latidos)
+      .reduce((a, b) => a + b, 0);
+    let totalTemperatura = data
+      .map(d => d.temperatura)
+      .reduce((a, b) => a + b, 0);
+    return {
+      promedioTemp: totalTemperatura / data.length,
+      promedioPpm: totalLatidos / data.length
+    };
+  };
+
+  const revisarStatus = (data, especie) => {
     const { temperatura, latidos } = data;
     const { maxTemp, minTemp, maxPpm, minPpm } = especie;
     let porcentajeTemperatura = 0;
