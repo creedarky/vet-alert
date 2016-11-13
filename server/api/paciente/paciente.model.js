@@ -12,6 +12,7 @@ export default function(sequelize, DataTypes) {
     annoNacimiento: DataTypes.INTEGER,
     carnet: DataTypes.INTEGER,
     sexo: DataTypes.CHAR,
+    activo: DataTypes.BOOLEAN
   }, {
     underscored: true,
     underscoredAll: true,

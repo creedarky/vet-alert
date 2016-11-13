@@ -1,21 +1,24 @@
 <div class="Main">
-
-  <div class="Main Monitor" ng-repeat="monitor in $ctrl.monitores">
-    <div>ECG: {{ monitor.ecg.valor }} </div>
-    Signos Vitales:
-    <div>
-      Temperatura: {{monitor.estado.temperatura}}
-    </div>
-    <div>
-      Latidos Por Minuto: {{monitor.estado.latidos}}
-    </div>
-
-    <div>
-      Presion: {{monitor.estado.presion}}
-    </div>
-    <div>
-      Temperatura Ambiente: {{ monitor.estado.tempAmbiente }}
+  <div class="Main-monitor" ng-repeat="paciente in $ctrl.pacientes" ng-click="$ctrl.onClick(paciente)">
+    <h5>Monitor {{ paciente.monitor.id }}</h5>
+    <div class="Main-status">
+      <div class="Main-status-data-container">
+        <span class="Main-status-label">Paciente</span>
+        <span class="Main-status-value"> {{  paciente.nombre }}</span>
+      </div>
+      <div class="Main-status-data-container">
+        <span class="Main-status-label">Estado</span>
+        <span class="Main-status-value">
+          <div class="Main-status-ball Main-status-ball--{{paciente.estado.estado}}" ></div>
+        </span>
+      </div>
+      <div class="Main-status-data-container">
+        <span class="Main-status-label">Especie</span>
+        <span class="Main-status-value">
+          {{ paciente.especie.nombreComun }}
+        </span>
+      </div>
+      <!--<ecg valor="monitor.ecg.valor" />-->
     </div>
   </div>
-
 </div>

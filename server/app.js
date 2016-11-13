@@ -5,9 +5,12 @@
 'use strict';
 
 import express from 'express';
+import http from 'http';
 import sqldb from './sqldb';
 import config from './config/environment';
-import http from 'http';
+import cache from './cache'
+
+const { Paciente, Especie, Monitor } = sqldb;
 
 // Populate databases with sample data
 if (config.seedDB) {
@@ -15,9 +18,9 @@ if (config.seedDB) {
 }
 
 // Setup server
-var app = express();
-var server = http.createServer(app);
-var socketio = require('socket.io')(server, {
+const app = express();
+const server = http.createServer(app);
+const socketio = require('socket.io')(server, {
   serveClient: config.env !== 'production',
   path: '/socket.io-client'
 });
@@ -27,14 +30,26 @@ require('./routes').default(app);
 
 // Start server
 function startServer() {
-  sqldb.Monitor.update({
-    activo: false
-  }, {
+  Paciente.findAll({
     where: {
-      id: { $lt: 1000}
-    }
-  }).then(() => {
-    require('./config/socketio').default(socketio);
+      activo: true,
+      id_monitor: {
+        $ne: null
+      }
+    },
+    include: [
+      {
+        model: Monitor, as: 'monitor'
+      },
+      {
+        model: Especie, as: 'especie'
+      }
+    ]
+  }).then(result => {
+    const pacientes = JSON.parse(JSON.stringify(result));
+    cache.setCurrentPatients(pacientes);
+    require('./config/socketio').default(socketio, cache);
+    require('./config/arduino').default(socketio, cache);
   });
 
   app.angularFullstack = server.listen(config.port, config.ip, function() {
@@ -45,6 +60,7 @@ function startServer() {
 sqldb.sequelize.sync()
   .then(startServer)
   .catch(function(err) {
+    throw err;
     console.log('Server failed to start due to error: %s', err);
   });
 

@@ -3,37 +3,42 @@ import uiRouter from 'angular-ui-router';
 import routing from './main.routes';
 
 export class MainController {
-  monitores = [];
+  pacientes = [];
 
   /*@ngInject*/
-  constructor(socket, monitorService) {
+  constructor(socket, $state, pacienteService) {
     this.socket = socket.socket;
-    this.monitorService = monitorService;
+    this.$state = $state;
+    this.pacienteService = pacienteService;
   }
 
   $onInit() {
-    this.monitores = this.monitorService.query();
     console.log(this.monitores);
-
-    this.socket.on('data', data => {
-      try {
-        console.log(data);
-        this.addData(data);
-      } catch(e) {
-        console.log(e);
-      } // eslint-disable-line
-    });
+    this.pacientes = this.pacienteService.getPacientes();
+    this.socket.on('updated-patients', this.updatePatients);
+    this.socket.on('data', this.addData);
   }
 
-  addData(data) {
-    console.log('addData');
-    const monitor = this.monitores.find(m => m.id === data.idMonitor);
-    console.log(monitor);
-    if (!monitor) {
+  $onDestroy() {
+    this.socket.removeListener('data', this.addData);
+    this.socket.removeListener('updated-patients', this.updatePatients);
+  }
+
+  addData = (data) => {
+    console.log('add data', data);
+    const paciente = this.pacientes.find(p => p.id === data.idPaciente);
+    if (!paciente) {
       return;
     }
-    monitor[data.tipo] = data;
-    console.log(data);
+    paciente[data.tipo] = data;
+  };
+
+  updatePatients = (pacientes) => {
+    this.pacientes = pacientes;
+  };
+
+  onClick(paciente) {
+    this.$state.go('root.paciente', {id: paciente.id});
   }
 }
 

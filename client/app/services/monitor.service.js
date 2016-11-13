@@ -1,5 +1,4 @@
 'use strict';
-const angular = require('angular');
 
 /*@ngInject*/
 export default function monitorService($resource) {
