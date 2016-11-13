@@ -22,9 +22,6 @@ export class RootController {
       return;
     }
     paciente[data.tipo] = data;
-    if (data.tipo !== 'ecg') {
-      console.log(paciente, data);
-    }
   }
 
   updatePatients(pacientes) {

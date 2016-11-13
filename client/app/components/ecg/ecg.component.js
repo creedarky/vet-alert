@@ -1,6 +1,7 @@
 'use strict';
-const angular = require('angular');
-const d3 = require('d3');
+import d3 from 'd3';
+import isFinite from 'lodash/isFinite';
+
 
 export default class ecgComponent {
   /*@ngInject*/
@@ -160,6 +161,7 @@ export default class ecgComponent {
 
   $onChanges(changedObject) {
     if (!this.initialized) return;
+    if (!isFinite(changedObject.valor.currentValue)) return;
     const object = {
       x: Date.now(),
       y: changedObject.valor.currentValue

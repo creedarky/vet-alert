@@ -6,7 +6,6 @@ export default function pacienteService() {
   let pacientes = [];
 
   const getPacientes = () => {
-    console.log(pacientes);
     return pacientes;
   };
 

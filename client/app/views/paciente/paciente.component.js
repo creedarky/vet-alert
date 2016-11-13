@@ -15,7 +15,6 @@ export class PacienteComponent {
   }
 
   $onInit() {
-    console.log(this.monitores);
     this.initPaciente();
   }
 
@@ -29,17 +28,7 @@ export class PacienteComponent {
       this.timeout = this.$timeout(() => this.initPaciente(), 500);
     }
     this.paciente = paciente;
-    console.log(this.paciente);
   }
-
-  // onData = (data) => {
-  //   console.log(this.paciente.id, data.idPaciente);
-  //   if (data.idPaciente !== this.paciente.id) {
-  //     return;
-  //   }
-  //   this.paciente[data.tipo] = data;
-  // }
-
 }
 
 export default angular.module('webappApp.views.paciente', [uiRouter])
