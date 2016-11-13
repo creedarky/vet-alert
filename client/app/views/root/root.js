@@ -3,7 +3,8 @@ import uiRouter from 'angular-ui-router';
 
 export class RootController {
   pacientes = [];
-
+  alertas = [];
+  alertasEliminadas = [];
   /*@ngInject*/
   constructor(socket, pacienteService) {
     this.socket = socket.socket;
@@ -22,6 +23,24 @@ export class RootController {
       return;
     }
     paciente[data.tipo] = data;
+    if (data.tipo !== 'ecg') {
+      console.log(data.alerta);
+    }
+    if (data.alerta) {
+      let { alerta } = data;
+      let alertaExistente = this.alertas.find(a => alerta.id === a.id);
+      let alertaEliminada = this.alertasEliminadas.find(id => alerta.id === id);
+      if (!alertaEliminada && !alertaExistente) {
+        this.alertas.push(alerta);
+        console.log(this.alertas);
+      }
+    }
+  }
+
+  cerrarAlerta(index) {
+    let alerta = this.alertas[index];
+    this.alertasEliminadas.push(alerta.id);
+    this.alertas.splice(index, 1);
   }
 
   updatePatients(pacientes) {
@@ -36,9 +55,10 @@ export default angular.module('webappApp.views.root', [uiRouter])
 
     $stateProvider.state('root', {
       abstract: true,
-      template: '<div ui-view=""></div>',
+      template: require('./root.html'),
       authenticate: true,
-      controller: RootController
+      controller: RootController,
+      controllerAs: 'rootCtrl'
     });
   })
   .name;

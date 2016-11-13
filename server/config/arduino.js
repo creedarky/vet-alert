@@ -2,7 +2,11 @@ import SerialPort from 'serialport';
 import os from 'os';
 import { Monitor, MonitoreoPaciente } from '../sqldb';
 import ArduinoScanner from '../scanner';
+import moment from 'moment';
+import isNil from 'lodash/isNil';
 
+const MIN_WARNING = 0;
+const MIN_DANGER = 1;
 
 export default function(socketio, cache) {
   const arduinoScanner = new ArduinoScanner();
@@ -41,16 +45,33 @@ export default function(socketio, cache) {
     let monitor = getMonitor(data);
     let paciente = monitor.paciente;
 
-    const margen = revisarStatus(data, paciente.especie);
+    const status = calcularStatus(data, paciente.especie);
 
     let estado = 'ok';
-    if (margen > 1) { // TODO definir el porcentaje
-      estado = 'alert';
-    } else if (margen > 0){
+
+    if (status.margen > MIN_DANGER) { // TODO definir el porcentaje
+      estado = 'danger';
+    } else if (status.margen > MIN_WARNING){
       estado = 'warning';
     }
+
     monitor.estado = estado;
     data.estado = estado;
+    let mensajes = getMensaje(status);
+    console.log(mensajes);
+    if (mensajes.length) {
+      let alerta = monitor.alerta || {};
+      let actualizarAlerta = isNil(alerta.fechaAlerta) || moment().diff(moment(alerta.fecha), 'minutes') > 5;
+      let fecha = new Date();
+      monitor.alerta = actualizarAlerta ? {
+        id: `${monitor.id}${monitor.paciente.id}${fecha.getTime()}`,
+        fecha,
+        mensajes,
+        tipo: estado
+      } : alerta;
+      // TODO aca deberia mandar notificacion
+    }
+    data.alerta = monitor.alerta;
     data.idPaciente = paciente.id;
     data.promedioTemp = monitor.promedioTemp;
     data.promedioPpm = monitor.promedioPpm;
@@ -81,6 +102,7 @@ export default function(socketio, cache) {
         return p.monitor.id === data.idMonitor
       });
       monitorData[data.idMonitor] = {
+        id: data.idMonitor,
         paciente: paciente,
         data: [data],
         promedioTemp: data.temperatura,
@@ -104,24 +126,42 @@ export default function(socketio, cache) {
     };
   };
 
-  const revisarStatus = (data, especie) => {
+  const calcularStatus = (data, especie) => {
     const { temperatura, latidos } = data;
     const { maxTemp, minTemp, maxPpm, minPpm } = especie;
     let porcentajeTemperatura = 0;
     let porcentajeLatidos = 0;
     if (temperatura > maxTemp) {
-      porcentajeTemperatura = Math.abs(100 - temperatura * 100 / maxTemp);
+      porcentajeTemperatura = (temperatura * 100 / maxTemp) - 100;
     } else if (temperatura < minTemp) {
-      porcentajeTemperatura = Math.abs(100 - temperatura * 100 / minTemp);
+      porcentajeTemperatura = (temperatura * 100 / minTemp) - 100;
     }
 
     if (latidos > maxPpm) {
-      porcentajeLatidos = Math.abs(100 - latidos * 100 / maxPpm);
+      porcentajeLatidos = (latidos * 100 / maxPpm) - 100;
     } else if (latidos < minPpm) {
-      porcentajeLatidos = Math.abs(100 - latidos * 100 / minPpm);
+      porcentajeLatidos = (latidos * 100 / minPpm) - 100;
     }
-    return porcentajeLatidos + porcentajeTemperatura;
+    return  {
+      porcentajeLatidos,
+      porcentajeTemperatura,
+      margen: Math.abs(porcentajeLatidos) + Math.abs(porcentajeTemperatura)
+    };
   };
+
+  const getMensaje = (status) => {
+    let mensajes = []
+    if (status.porcentajeLatidos !== 0) {
+      let mensaje = status.porcentajeLatidos > 0 ? 'Ritmo cardiaco elevado' : 'Ritmo cardiaco bajo';
+      mensajes.push(mensaje);
+    }
+    if (status.porcentajeTemperatura !== 0) {
+      let mensaje = status.porcentajeTemperatura > 0 ? 'Temperatura del paciente elevada' : 'Temperatura del paciente baja'
+      mensajes.push(mensaje);
+    }
+    return mensajes;
+  };
+
 
 
   arduinoScanner.on('arduinoFound', function (response) {

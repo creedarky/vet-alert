@@ -1,0 +1,9 @@
+<div>
+  <div ui-view=""></div>
+  <div uib-alert ng-repeat="alerta in rootCtrl.alertas" ng-class="'alert-' + (alerta.tipo || 'warning')" close="rootCtrl.cerrarAlerta($index)">
+    <div ng-repeat="mensaje in alerta.mensajes">
+      {{ mensaje }}
+    </div>
+  </div>
+
+</div>
