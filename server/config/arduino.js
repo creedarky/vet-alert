@@ -1,6 +1,6 @@
 import SerialPort from 'serialport';
 import os from 'os';
-import { Monitor } from '../sqldb';
+import { Monitor, MonitoreoPaciente } from '../sqldb';
 import ArduinoScanner from '../scanner';
 
 
@@ -49,6 +49,7 @@ export default function(socketio, cache) {
     } else if (margen > 0){
       estado = 'warning';
     }
+    monitor.estado = estado;
     data.estado = estado;
     data.idPaciente = paciente.id;
     data.promedioTemp = monitor.promedioTemp;
@@ -62,9 +63,18 @@ export default function(socketio, cache) {
       monitor = monitorData[data.idMonitor];
       monitor.data.push(data);
       if (monitor.data.length >= 20) {
-        const { data } = monitor;
-        const promedios = calcularPromedio(data);
+        const promedios = calcularPromedio(monitor.data);
         monitor = Object.assign({}, monitor, promedios);
+        monitor.data = [];
+        MonitoreoPaciente.create({
+          promedioTemperatura: promedios.promedioTemp,
+          promedioPpm: promedios.promedioPpm,
+          promedioMovHora: 0,
+          estadoTemperatura: data.temperatura,
+          estadoMovimiento: data.latidos,
+          estadoPaciente: monitor.estado,
+          id_paciente: monitor.paciente.id
+        });
       }
     } else {
       let paciente = pacientes.find(p => {
