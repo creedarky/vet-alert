@@ -5,6 +5,7 @@ import angular from 'angular';
 import ngCookies from 'angular-cookies';
 import ngResource from 'angular-resource';
 import ngSanitize from 'angular-sanitize';
+import uiNotification from 'angular-ui-notification';
 import 'angular-socket-io';
 
 import uiRouter from 'angular-ui-router';
@@ -30,9 +31,20 @@ import socket from '../components/socket/socket.service';
 import './app.scss';
 
 angular.module('webappApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
-    uiBootstrap, _Auth, services, views, navbar, footer, constants, socket, util, components
+    uiBootstrap, uiNotification, _Auth, services, views, navbar, footer, constants, socket, util, components
   ])
   .config(routeConfig)
+  .config(function(NotificationProvider) {
+    NotificationProvider.setOptions({
+      delay: null,
+      startTop: 20,
+      startRight: 10,
+      verticalSpacing: 20,
+      horizontalSpacing: 20,
+      positionX: 'right',
+      positionY: 'bottom'
+    });
+  })
   .run(function($rootScope, $location, Auth) {
     'ngInject';
     // Redirect to login if route requires auth and you're not logged in

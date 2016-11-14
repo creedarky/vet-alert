@@ -7,6 +7,11 @@ import isNil from 'lodash/isNil';
 
 const MIN_WARNING = 0;
 const MIN_DANGER = 1;
+const ESTADOS = {
+  OK: 'ok',
+  WARNING: 'warning',
+  DANGER: 'danger'
+};
 
 export default function(socketio, cache) {
   const arduinoScanner = new ArduinoScanner();
@@ -47,21 +52,20 @@ export default function(socketio, cache) {
 
     const status = calcularStatus(data, paciente.especie);
 
-    let estado = 'ok';
+    let estado = ESTADOS.OK;
 
     if (status.margen > MIN_DANGER) { // TODO definir el porcentaje
-      estado = 'danger';
+      estado = ESTADOS.DANGER;
     } else if (status.margen > MIN_WARNING){
-      estado = 'warning';
+      estado = ESTADOS.WARNING;
     }
 
     monitor.estado = estado;
     data.estado = estado;
     let mensajes = getMensaje(status);
-    console.log(mensajes);
     if (mensajes.length) {
       let alerta = monitor.alerta || {};
-      let actualizarAlerta = isNil(alerta.fechaAlerta) || moment().diff(moment(alerta.fecha), 'minutes') > 5;
+      let actualizarAlerta = isNil(alerta.fecha) || moment().diff(moment(alerta.fecha), 'minutes') >= 5 || (estado !== alerta.tipo && estado === ESTADOS.DANGER);
       let fecha = new Date();
       monitor.alerta = actualizarAlerta ? {
         id: `${monitor.id}${monitor.paciente.id}${fecha.getTime()}`,
@@ -69,6 +73,7 @@ export default function(socketio, cache) {
         mensajes,
         tipo: estado
       } : alerta;
+      setMonitor(monitor);
       // TODO aca deberia mandar notificacion
     }
     data.alerta = monitor.alerta;
@@ -83,10 +88,14 @@ export default function(socketio, cache) {
     if (monitorData[data.idMonitor]) {
       monitor = monitorData[data.idMonitor];
       monitor.data.push(data);
+      console.log(monitor.data);
       if (monitor.data.length >= 20) {
         const promedios = calcularPromedio(monitor.data);
         monitor = Object.assign({}, monitor, promedios);
         monitor.data = [];
+        monitor.data.length = 0;
+        setMonitor(monitor);
+        console.log(monitor.data);
         MonitoreoPaciente.create({
           promedioTemperatura: promedios.promedioTemp,
           promedioPpm: promedios.promedioPpm,
@@ -110,7 +119,12 @@ export default function(socketio, cache) {
       };
       monitor = monitorData[data.idMonitor];
     }
+
     return monitor
+  };
+
+  const setMonitor = (monitor) => {
+    monitorData[monitor.id] = monitor;
   };
 
   const calcularPromedio = (data) => {
@@ -150,13 +164,13 @@ export default function(socketio, cache) {
   };
 
   const getMensaje = (status) => {
-    let mensajes = []
+    let mensajes = [];
     if (status.porcentajeLatidos !== 0) {
       let mensaje = status.porcentajeLatidos > 0 ? 'Ritmo cardiaco elevado' : 'Ritmo cardiaco bajo';
       mensajes.push(mensaje);
     }
     if (status.porcentajeTemperatura !== 0) {
-      let mensaje = status.porcentajeTemperatura > 0 ? 'Temperatura del paciente elevada' : 'Temperatura del paciente baja'
+      let mensaje = status.porcentajeTemperatura > 0 ? 'Temperatura del paciente elevada' : 'Temperatura del paciente baja';
       mensajes.push(mensaje);
     }
     return mensajes;

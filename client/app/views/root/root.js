@@ -4,11 +4,11 @@ import uiRouter from 'angular-ui-router';
 export class RootController {
   pacientes = [];
   alertas = [];
-  alertasEliminadas = [];
   /*@ngInject*/
-  constructor(socket, pacienteService) {
+  constructor(socket, pacienteService, Notification) {
     this.socket = socket.socket;
-    this.pacienteService = pacienteService
+    this.pacienteService = pacienteService;
+    this.Notification = Notification;
   }
 
   $onInit() {
@@ -28,19 +28,18 @@ export class RootController {
     }
     if (data.alerta) {
       let { alerta } = data;
-      let alertaExistente = this.alertas.find(a => alerta.id === a.id);
-      let alertaEliminada = this.alertasEliminadas.find(id => alerta.id === id);
-      if (!alertaEliminada && !alertaExistente) {
-        this.alertas.push(alerta);
+      let alertaExistente = this.alertas.find(id => alerta.id === id);
+      if (!alertaExistente) {
+        this.alertas.push(alerta.id);
+        this.agregarAlerta(paciente, alerta);
         console.log(this.alertas);
       }
     }
   }
 
-  cerrarAlerta(index) {
-    let alerta = this.alertas[index];
-    this.alertasEliminadas.push(alerta.id);
-    this.alertas.splice(index, 1);
+  agregarAlerta(paciente, alerta) {
+    let mensaje = `<b>${paciente.nombre}</b><br/> ${alerta.mensajes.map(m => `${m}<br/>`)}`;
+    this.Notification({message: mensaje}, alerta.tipo);
   }
 
   updatePatients(pacientes) {
