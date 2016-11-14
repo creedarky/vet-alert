@@ -25,12 +25,12 @@
         </div>
         <div class="col-sm-6">
           <p><strong>Movimiento</strong></p>
-          Inactivo
+          {{ pacienteCtrl.paciente.estado.movimiento === 1 ? 'En Movimiento' : 'Inactivo' }}
         </div>
       </div>
       <div class="row Paciente-row">
         <div class="col-sm-6">
-          <h5>Latidos por minuto</h5>
+          <h5>Temperatura</h5>
           <div class="row">
             <div class="col-sm-3 col-md-2 col-lg-1">
               <i class="fa fa-thermometer-three-quarters fa-3x"></i>
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="col-sm-4">
-      <ecg valor="pacienteCtrl.paciente.ecg.valor"></ecg>
+      <ecg valor="pacienteCtrl.paciente.estado.pulso" x="pacienteCtrl.paciente.estado.x"></ecg>
     </div>
   </div>
 </div>

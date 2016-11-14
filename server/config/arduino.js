@@ -42,7 +42,6 @@ export default function(socketio, cache) {
   };
 
   const addData = (data) => {
-    console.log(data);
     if (data.tipo !== 'estado') {
       socketio.sockets.emit('data', data);
       return;
@@ -89,14 +88,12 @@ export default function(socketio, cache) {
     if (monitorData[data.idMonitor]) {
       monitor = monitorData[data.idMonitor];
       monitor.data.push(data);
-      console.log(monitor.data);
       if (monitor.data.length >= 20) {
         const promedios = calcularPromedio(monitor.data);
         monitor = Object.assign({}, monitor, promedios);
         monitor.data = [];
         monitor.data.length = 0;
         setMonitor(monitor);
-        console.log(monitor.data);
         MonitoreoPaciente.create({
           promedioTemperatura: promedios.promedioTemp,
           promedioPpm: promedios.promedioPpm,
@@ -180,14 +177,13 @@ export default function(socketio, cache) {
 
 
   arduinoScanner.on('arduinoFound', function (response) {
-    console.log('arduinoFound');
     arduinoScanner.stop();
     if (sp[response.serialNumber]) {
       return;
     }
     // connectToArduino(response.port);
     sp[response.serialNumber] = new SerialPort(`${prefix}${response.port}`, {
-      baudrate: 9600,
+      baudrate: 115200,
       parser: SerialPort.parsers.readline('\n')
     }, e => console.log(e));
 

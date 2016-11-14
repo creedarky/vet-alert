@@ -23,16 +23,12 @@ export class RootController {
       return;
     }
     paciente[data.tipo] = data;
-    if (data.tipo !== 'ecg') {
-      console.log(data.alerta);
-    }
     if (data.alerta) {
       let { alerta } = data;
       let alertaExistente = this.alertas.find(id => alerta.id === id);
       if (!alertaExistente) {
         this.alertas.push(alerta.id);
         this.agregarAlerta(paciente, alerta);
-        console.log(this.alertas);
       }
     }
   }

@@ -20,8 +20,8 @@ export default class ecgComponent {
       xMax: 3000,
       xMajorTicks: 1000,
 
-      yMin: -1,
-      yMax: 1.5
+      yMin: 0,
+      yMax: 1023
     };
     this.$element = $element;
     this.initSvg();
@@ -161,9 +161,10 @@ export default class ecgComponent {
 
   $onChanges(changedObject) {
     if (!this.initialized) return;
+    if (!changedObject.valor || !changedObject.x) return;
     if (!isFinite(changedObject.valor.currentValue)) return;
     const object = {
-      x: Date.now(),
+      x: changedObject.x.currentValue,
       y: changedObject.valor.currentValue
     };
     this.addDataPoint(object)
