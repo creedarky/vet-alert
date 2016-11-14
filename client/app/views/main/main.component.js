@@ -38,7 +38,8 @@ export class MainController {
   };
 
   onClick(paciente) {
-    this.$state.go('root.paciente', {id: paciente.id});
+    // this.$state.go('root.paciente', {id: paciente.id});
+    this.paciente = paciente;
   }
 }
 

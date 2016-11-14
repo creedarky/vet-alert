@@ -3,7 +3,7 @@ const angular = require('angular');
 
 const uiRouter = require('angular-ui-router');
 
-import routes from './paciente.routes';
+// import routes from './paciente.routes';
 
 export class PacienteComponent {
   /*@ngInject*/
@@ -15,7 +15,7 @@ export class PacienteComponent {
   }
 
   $onInit() {
-    this.initPaciente();
+    // this.initPaciente();
   }
 
   $onDestroy() {
@@ -32,10 +32,10 @@ export class PacienteComponent {
 }
 
 export default angular.module('webappApp.views.paciente', [uiRouter])
-  .config(routes)
   .component('paciente', {
     template: require('./paciente.html'),
     controller: PacienteComponent,
+    bindings: { paciente: '<' },
     controllerAs: 'pacienteCtrl'
   })
   .name;

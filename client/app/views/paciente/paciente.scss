@@ -1,15 +1,5 @@
 .Paciente-row {
-  display: flex;
-  margin-bottom: 3rem;
-
-  &--center {
-    align-items: center;
-  }
-
-  &--baseline {
-    align-items: baseline;
-  }
-
+  margin-bottom: 1.5rem;
 }
 .Paciente-nombre {
   font-size: 2.5rem;

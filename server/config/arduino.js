@@ -199,7 +199,6 @@ export default function(socketio, cache) {
         createMonitor(parsedData.idMonitor);
         addData(parsedData);
       } catch (e) {
-        // console.error('data incorrect received');
       }
     });
   });

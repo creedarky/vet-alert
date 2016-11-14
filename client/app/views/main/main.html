@@ -1,24 +1,28 @@
-<div class="Main">
-  <div class="Main-monitor" ng-repeat="paciente in $ctrl.pacientes" ng-click="$ctrl.onClick(paciente)">
-    <h5>Monitor {{ paciente.monitor.id }}</h5>
-    <div class="Main-status">
-      <div class="Main-status-data-container">
-        <span class="Main-status-label">Paciente</span>
-        <span class="Main-status-value"> {{  paciente.nombre }}</span>
+<div class="container-fluid">
+  <div class="Main col-sm-4">
+    <div class="Main-monitor" ng-repeat="paciente in $ctrl.pacientes" ng-click="$ctrl.onClick(paciente)">
+      <h5>Monitor {{ paciente.monitor.id }}</h5>
+      <div class="Main-status">
+        <div class="Main-status-data-container">
+          <span class="Main-status-label">Paciente</span>
+          <span class="Main-status-value"> {{  paciente.nombre }}</span>
+        </div>
+        <div class="Main-status-data-container">
+          <span class="Main-status-label">Estado</span>
+          <span class="Main-status-value">
+            <div class="Main-status-ball Main-status-ball--{{paciente.estado.estado}}" ></div>
+          </span>
+        </div>
+        <div class="Main-status-data-container">
+          <span class="Main-status-label">Especie</span>
+          <span class="Main-status-value">
+            {{ paciente.especie.nombreComun }}
+          </span>
+        </div>
       </div>
-      <div class="Main-status-data-container">
-        <span class="Main-status-label">Estado</span>
-        <span class="Main-status-value">
-          <div class="Main-status-ball Main-status-ball--{{paciente.estado.estado}}" ></div>
-        </span>
-      </div>
-      <div class="Main-status-data-container">
-        <span class="Main-status-label">Especie</span>
-        <span class="Main-status-value">
-          {{ paciente.especie.nombreComun }}
-        </span>
-      </div>
-      <!--<ecg valor="monitor.ecg.valor" />-->
     </div>
+  </div>
+  <div class="col-sm-8" ng-if="$ctrl.paciente">
+    <paciente paciente="$ctrl.paciente"></paciente>
   </div>
 </div>
