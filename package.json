@@ -22,6 +22,7 @@
     "composable-middleware": "^0.3.0",
     "cookie-parser": "^1.3.5",
     "core-js": "^2.2.1",
+    "cross-env": "^2.0.0",
     "d3": "^3.5.17",
     "ejs": "^2.3.3",
     "errorhandler": "^1.4.2",
@@ -138,7 +139,7 @@
   "scripts": {
     "test": "gulp test",
     "update-webdriver": "node node_modules/pnrotractor/bin/webdriver-manager update",
-    "start": "node server"
+    "start": "cross-env NODE_ENV=production node dist/server/index.js"
   },
   "private": true
 }

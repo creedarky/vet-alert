@@ -35,6 +35,7 @@ exports.default = function (socketio, cache) {
   };
 
   var addData = function addData(data) {
+    console.log(data);
     if (data.tipo !== 'estado') {
       socketio.sockets.emit('data', data);
       return;
