@@ -7,7 +7,6 @@
 import express from 'express';
 import favicon from 'serve-favicon';
 import morgan from 'morgan';
-import shrinkRay from 'shrink-ray';
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
