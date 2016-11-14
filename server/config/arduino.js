@@ -7,6 +7,7 @@ import isNil from 'lodash/isNil';
 
 const MIN_WARNING = 0;
 const MIN_DANGER = 1;
+const MAX_LENGTH = 250;
 const ESTADOS = {
   OK: 'ok',
   WARNING: 'warning',
@@ -88,7 +89,7 @@ export default function(socketio, cache) {
     if (monitorData[data.idMonitor]) {
       monitor = monitorData[data.idMonitor];
       monitor.data.push(data);
-      if (monitor.data.length >= 20) {
+      if (monitor.data.length >= MAX_LENGTH) {
         const promedios = calcularPromedio(monitor.data);
         monitor = Object.assign({}, monitor, promedios);
         monitor.data = [];

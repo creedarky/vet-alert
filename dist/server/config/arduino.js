@@ -35,7 +35,6 @@ exports.default = function (socketio, cache) {
   };
 
   var addData = function addData(data) {
-    console.log(data);
     if (data.tipo !== 'estado') {
       socketio.sockets.emit('data', data);
       return;
@@ -83,14 +82,12 @@ exports.default = function (socketio, cache) {
     if (monitorData[data.idMonitor]) {
       monitor = monitorData[data.idMonitor];
       monitor.data.push(data);
-      console.log(monitor.data);
-      if (monitor.data.length >= 20) {
+      if (monitor.data.length >= MAX_LENGTH) {
         var promedios = calcularPromedio(monitor.data);
         monitor = (0, _assign2.default)({}, monitor, promedios);
         monitor.data = [];
         monitor.data.length = 0;
         setMonitor(monitor);
-        console.log(monitor.data);
         _sqldb.MonitoreoPaciente.create({
           promedioTemperatura: promedios.promedioTemp,
           promedioPpm: promedios.promedioPpm,
@@ -181,14 +178,13 @@ exports.default = function (socketio, cache) {
   };
 
   arduinoScanner.on('arduinoFound', function (response) {
-    console.log('arduinoFound');
     arduinoScanner.stop();
     if (sp[response.serialNumber]) {
       return;
     }
     // connectToArduino(response.port);
     sp[response.serialNumber] = new _serialport2.default('' + prefix + response.port, {
-      baudrate: 9600,
+      baudrate: 115200,
       parser: _serialport2.default.parsers.readline('\n')
     }, function (e) {
       return console.log(e);
@@ -237,6 +233,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var MIN_WARNING = 0;
 var MIN_DANGER = 1;
+var MAX_LENGTH = 250;
 var ESTADOS = {
   OK: 'ok',
   WARNING: 'warning',
