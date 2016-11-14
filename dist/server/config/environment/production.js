@@ -12,29 +12,14 @@ module.exports = {
   port: process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080,
 
   sequelize: {
-    host: 'localhost',
-    port: '3306',
-    username: 'root',
-    password: 'mypass',
-    database: 'vet-alert',
+    uri: process.env.SEQUELIZE_URI || 'sqlite://',
     options: {
       logging: false,
-      storage: 'dev.sqlite',
+      storage: 'dist.sqlite',
       define: {
         timestamps: false
       }
     }
-  },
-
-  // sequelize: {
-  //   uri: process.env.SEQUELIZE_URI || 'sqlite://',
-  //   options: {
-  //     logging: false,
-  //     storage: 'dist.sqlite',
-  //     define: {
-  //       timestamps: false
-  //     }
-  //   }
-  // }
+  }
 };
 //# sourceMappingURL=production.js.map
