@@ -56,11 +56,11 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_INSERT_APODERADO
-AFTER INSERT ON APODERADO 
-FOR EACH ROW 
-BEGIN 
+AFTER INSERT ON APODERADO
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 1, null, null, 'APODERADO', null, CONCAT(NEW.nombre,' ',NEW.apellido), NEW.id);
 
@@ -80,8 +80,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_UPDATE_APODERADO
-AFTER UPDATE ON APODERADO 
-FOR EACH ROW 
+AFTER UPDATE ON APODERADO
+FOR EACH ROW
 BEGIN
 Declare valorAntiguo VARCHAR(700);
 Declare valorNuevo VARCHAR(700);
@@ -89,33 +89,33 @@ SET valorAntiguo := '';
 SET valorNuevo := '';
 
 IF(OLD.nombre != NEW.nombre) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.nombre, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.nombre, '; ');
 SET valorNuevo := CONCAT(valorNuevo, 'nombre: ',NEW.nombre, '; ');
 END IF;
 
 IF(OLD.apellido != NEW.apellido) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'apellido: ', OLD.apellido, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo, 'apellido: ', NEW.apellido, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'apellido: ', OLD.apellido, '; ');
+SET valorNuevo := CONCAT(valorNuevo, 'apellido: ', NEW.apellido, '; ');
 END IF;
 
 IF(OLD.direccion != NEW.direccion) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'direccion: ', OLD.direccion, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo, 'direccion: ', NEW.direccion, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'direccion: ', OLD.direccion, '; ');
+SET valorNuevo := CONCAT(valorNuevo, 'direccion: ', NEW.direccion, '; ');
 END IF;
 
 IF(OLD.id_comuna != NEW.id_comuna) then
-SET valorAntiguo := CONCAT(valorAntiguo,'id_comuna : ',OLD.id_comuna, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'id_comuna : ',NEW.id_comuna, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,'id_comuna : ',OLD.id_comuna, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'id_comuna : ',NEW.id_comuna, '; ');
 END IF;
 
 IF(OLD.telefono != NEW.telefono) then
-SET valorAntiguo := CONCAT(valorAntiguo,'telefono : ',OLD.telefono, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'telefono : ',NEW.telefono, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,'telefono : ',OLD.telefono, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'telefono : ',NEW.telefono, '; ');
 END IF;
 
 
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 2, null, null, 'APODERADO',  valorAntiguo, valorNuevo, OLD.id);
 
@@ -135,11 +135,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_DELETE_APODERADO
-AFTER DELETE ON APODERADO 
-FOR EACH ROW 
-BEGIN 
+AFTER DELETE ON APODERADO
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 3, null, null, 'APODERADO', CONCAT(OLD.nombre,' ',OLD.apellido), null, OLD.id);
 END */;;
@@ -185,8 +185,8 @@ DROP TABLE IF EXISTS `comuna`;
 CREATE TABLE `comuna` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(70) DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime,
   `id_ciudad` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_ciudad` (`id_ciudad`),
@@ -219,8 +219,8 @@ CREATE TABLE `especie` (
   `maxPpm` int(11) DEFAULT NULL,
   `minTemp` float DEFAULT NULL,
   `maxTemp` float DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -244,11 +244,11 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_INSERT_ESPECIE
-AFTER INSERT ON ESPECIE 
-FOR EACH ROW 
-BEGIN 
+AFTER INSERT ON ESPECIE
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 1, null, null, 'ESPECIE', null, NEW.nombre, NEW.id);
 END */;;
@@ -267,8 +267,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_UPDATE_ESPECIE
-AFTER UPDATE ON ESPECIE 
-FOR EACH ROW 
+AFTER UPDATE ON ESPECIE
+FOR EACH ROW
 BEGIN
 Declare valorAntiguo VARCHAR(700);
 Declare valorNuevo VARCHAR(700);
@@ -276,37 +276,37 @@ SET valorAntiguo := '';
 SET valorNuevo := '';
 
 IF(OLD.nombre != NEW.nombre) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.nombre, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.nombre, '; ');
 SET valorNuevo := CONCAT(valorNuevo, 'nombre: ',NEW.nombre, '; ');
 END IF;
 
 IF(OLD.nombre_comun != NEW.nombre_comun) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'nombre_comun: ', OLD.nombre_comun, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo, 'nombre_comun: ', NEW.nombre_comun, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'nombre_comun: ', OLD.nombre_comun, '; ');
+SET valorNuevo := CONCAT(valorNuevo, 'nombre_comun: ', NEW.nombre_comun, '; ');
 END IF;
 
 IF(OLD.minPpm != NEW.minPpm) then
-SET valorAntiguo := CONCAT(valorAntiguo,'minPpm : ',OLD.minPpm, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'minPpm : ',NEW.minPpm, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,'minPpm : ',OLD.minPpm, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'minPpm : ',NEW.minPpm, '; ');
 END IF;
 
 IF(OLD.maxPpm != NEW.maxPpm) then
-SET valorAntiguo := CONCAT(valorAntiguo,' maxPpm: ',OLD.maxPpm, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'maxPpm: ',NEW.maxPpm, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,' maxPpm: ',OLD.maxPpm, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'maxPpm: ',NEW.maxPpm, '; ');
 END IF;
 
 IF(OLD.minTemp != NEW.minTemp) then
-SET valorAntiguo := CONCAT(valorAntiguo,' minTemp: ',OLD.minTemp, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'minTemp: ',NEW.minTemp, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,' minTemp: ',OLD.minTemp, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'minTemp: ',NEW.minTemp, '; ');
 END IF;
 
 IF(OLD.maxTemp != NEW.maxTemp) then
-SET valorAntiguo := CONCAT(valorAntiguo,' maxTemp: ',OLD.maxTemp, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'maxTemp: ',NEW.maxTemp, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,' maxTemp: ',OLD.maxTemp, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'maxTemp: ',NEW.maxTemp, '; ');
 END IF;
 
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 2, null, null, 'ESPECIE',  valorAntiguo, valorNuevo, OLD.id);
 
@@ -326,11 +326,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_DELETE_ESPECIE
-AFTER DELETE ON ESPECIE 
-FOR EACH ROW 
-BEGIN 
+AFTER DELETE ON ESPECIE
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 3, null, null, 'ESPECIE', OLD.nombre, null, OLD.id);
 END */;;
@@ -350,8 +350,8 @@ DROP TABLE IF EXISTS `estado`;
 CREATE TABLE `estado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(45) DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -471,9 +471,9 @@ CREATE TABLE `monitoreo_paciente` (
   `estadoMovimiento` varchar(15) DEFAULT NULL,
   `estadoPaciente` varchar(15) DEFAULT NULL,
   `estadoPPM` varchar(15) DEFAULT NULL,
-  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
-  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha` datetime,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   `id_paciente` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_paciente` (`id_paciente`)
@@ -503,8 +503,8 @@ CREATE TABLE `paciente` (
   `annoNacimiento` int(11) DEFAULT NULL,
   `carnet` int(11) DEFAULT NULL,
   `sexo` char(6) DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   `id_apoderado` int(11) NOT NULL,
   `id_especie` int(11) NOT NULL,
   `id_monitor` int(11) DEFAULT NULL,
@@ -538,11 +538,11 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_INSERT_PACIENTE
-AFTER INSERT ON PACIENTE 
-FOR EACH ROW 
-BEGIN 
+AFTER INSERT ON PACIENTE
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 1, null, NEW.id, 'PACIENTE', null, NEW.nombre, NEW.id);
 END */;;
@@ -561,8 +561,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_UPDATE_PACIENTE
-AFTER UPDATE ON PACIENTE 
-FOR EACH ROW 
+AFTER UPDATE ON PACIENTE
+FOR EACH ROW
 BEGIN
 Declare valorAntiguo VARCHAR(700);
 Declare valorNuevo VARCHAR(700);
@@ -570,32 +570,32 @@ SET valorAntiguo := '';
 SET valorNuevo := '';
 
 IF(OLD.nombre != NEW.nombre) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.nombre, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.nombre, '; ');
 SET valorNuevo := CONCAT(valorNuevo, 'nombre: ',NEW.nombre, '; ');
 END IF;
 
 IF(OLD.annoNacimiento != NEW.annoNacimiento) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'nacimiento: ', OLD.annoNacimiento, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo, 'nacimiento: ', NEW.annoNacimiento, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'nacimiento: ', OLD.annoNacimiento, '; ');
+SET valorNuevo := CONCAT(valorNuevo, 'nacimiento: ', NEW.annoNacimiento, '; ');
 END IF;
 
 IF(OLD.sexo != NEW.sexo) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'sexo: ', OLD.sexo, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo, 'sexo: ', NEW.sexo, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'sexo: ', OLD.sexo, '; ');
+SET valorNuevo := CONCAT(valorNuevo, 'sexo: ', NEW.sexo, '; ');
 END IF;
 
 IF(OLD.id_apoderado != NEW.id_apoderado) then
-SET valorAntiguo := CONCAT(valorAntiguo,'id_apoderado : ',OLD.id_apoderado, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'id_apoderado : ',NEW.id_apoderado, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,'id_apoderado : ',OLD.id_apoderado, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'id_apoderado : ',NEW.id_apoderado, '; ');
 END IF;
 
 IF(OLD.id_especie != NEW.id_especie) then
-SET valorAntiguo := CONCAT(valorAntiguo,'id_especie : ',OLD.id_especie, '; '); 		
-SET valorNuevo := CONCAT(valorNuevo,'id_especie : ',NEW.id_especie, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo,'id_especie : ',OLD.id_especie, '; ');
+SET valorNuevo := CONCAT(valorNuevo,'id_especie : ',NEW.id_especie, '; ');
 END IF;
 
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 2, null, OLD.id, 'PACIENTE',  valorAntiguo, valorNuevo, OLD.id);
 END */;;
@@ -614,11 +614,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_DELETE_PACIENTE
-AFTER DELETE ON PACIENTE 
-FOR EACH ROW 
-BEGIN 
+AFTER DELETE ON PACIENTE
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 3, null, OLD.id, 'PACIENTE', OLD.nombre, null, OLD.id);
 END */;;
@@ -663,11 +663,11 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_INSERT_PERMISO
-AFTER INSERT ON PERMISO 
-FOR EACH ROW 
-BEGIN 
+AFTER INSERT ON PERMISO
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 1, null, null, 'PERMISO', null, NEW.descripcion, NEW.id);
 END */;;
@@ -687,7 +687,7 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_UPDATE_PERMISO
 AFTER UPDATE ON PERMISO
-FOR EACH ROW 
+FOR EACH ROW
 BEGIN
 Declare valorAntiguo VARCHAR(700);
 Declare valorNuevo VARCHAR(700);
@@ -695,12 +695,12 @@ SET valorAntiguo := '';
 SET valorNuevo := '';
 
 IF(OLD.descripcion != NEW.descripcion) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.descripcion, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.descripcion, '; ');
 SET valorNuevo := CONCAT(valorNuevo, 'nombre: ',NEW.descripcion, '; ');
 END IF;
 
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 2, null, null, 'PERMISO',  valorAntiguo, valorNuevo, OLD.id);
 END */;;
@@ -719,11 +719,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_DELETE_PERMISO
-AFTER DELETE ON PERMISO 
-FOR EACH ROW 
-BEGIN 
+AFTER DELETE ON PERMISO
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 3, null, null, 'PERMISO', OLD.descripcion, null, OLD.id);
 END */;;
@@ -743,8 +743,8 @@ DROP TABLE IF EXISTS `rol`;
 CREATE TABLE `rol` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(45) NOT NULL,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_actualizacion` datetime NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -768,11 +768,11 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_INSERT_ROL
-AFTER INSERT ON ROL 
-FOR EACH ROW 
-BEGIN 
+AFTER INSERT ON ROL
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 1, null, null, 'ROL', null, NEW.descripcion, NEW.id);
 END */;;
@@ -792,7 +792,7 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_UPDATE_ROL
 AFTER UPDATE ON ROL
-FOR EACH ROW 
+FOR EACH ROW
 BEGIN
 Declare valorAntiguo VARCHAR(700);
 Declare valorNuevo VARCHAR(700);
@@ -800,12 +800,12 @@ SET valorAntiguo := '';
 SET valorNuevo := '';
 
 IF(OLD.descripcion != NEW.descripcion) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.descripcion, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'nombre: ',OLD.descripcion, '; ');
 SET valorNuevo := CONCAT(valorNuevo, 'nombre: ',NEW.descripcion, '; ');
 END IF;
 
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 2, null, null, 'ROL',  valorAntiguo, valorNuevo, OLD.id);
 END */;;
@@ -824,11 +824,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_DELETE_ROL
-AFTER DELETE ON ROL 
-FOR EACH ROW 
-BEGIN 
+AFTER DELETE ON ROL
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 3, null, null, 'ROL', OLD.descripcion, null, OLD.id);
 END */;;
@@ -847,8 +847,8 @@ DROP TABLE IF EXISTS `rol_permiso`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `rol_permiso` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   `id_rol` int(11) NOT NULL,
   `id_permiso` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -879,10 +879,10 @@ UNLOCK TABLES;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_INSERT_ROL_PERMISO
 AFTER INSERT ON ROL_PERMISO
-FOR EACH ROW 
-BEGIN 
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 1, null, null, 'ROL_PERMISO', null, CONCAT('Rol ', NEW.id_rol, 'permiso ', NEW.id_permiso), NEW.id);
 END */;;
@@ -902,7 +902,7 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_UPDATE_ROL_PERMISO
 AFTER UPDATE ON ROL_PERMISO
-FOR EACH ROW 
+FOR EACH ROW
 BEGIN
 Declare valorAntiguo VARCHAR(700);
 Declare valorNuevo VARCHAR(700);
@@ -910,17 +910,17 @@ SET valorAntiguo := '';
 SET valorNuevo := '';
 
 IF(OLD.id_rol != NEW.id_rol) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'id_rol: ',OLD.id_rol, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'id_rol: ',OLD.id_rol, '; ');
 SET valorNuevo := CONCAT(valorNuevo, 'id_rol: ',NEW.id_rol, '; ');
 END IF;
 
 IF(OLD.id_permiso != NEW.id_permiso) then
-SET valorAntiguo := CONCAT(valorAntiguo, 'id_permiso: ',OLD.id_permiso, '; '); 		
+SET valorAntiguo := CONCAT(valorAntiguo, 'id_permiso: ',OLD.id_permiso, '; ');
 SET valorNuevo := CONCAT(valorNuevo, 'id_permiso: ',NEW.id_permiso, '; ');
 END IF;
 
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 2, null, null, 'ROL',  valorAntiguo, valorNuevo, OLD.id);
 END */;;
@@ -940,10 +940,10 @@ DELIMITER ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER TR_LOG_DELETE_ROL_PERMISO
 AFTER DELETE ON ROL_PERMISO
-FOR EACH ROW 
-BEGIN 
+FOR EACH ROW
+BEGIN
 insert into log
-(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado) 
+(fecha, id_evento, id_usuario, id_paciente, tabla_modificada, valor_antiguo, valor_nuevo, id_registro_creado_modificado)
 values
 (now(), 3, null, null, 'ROL_PERMISO', CONCAT('Rol ', OLD.id_rol, 'permiso ', OLD.id_permiso), null, OLD.id);
 END */;;
@@ -1040,7 +1040,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`apoderado`
 (`nombre`,
 `apellido`,
@@ -1080,7 +1080,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`ciudad`
 		(`nombre`,`fecha_creacion`,	`fecha_actualizacion`)
 		VALUES
@@ -1108,7 +1108,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`comuna`
 		(`nombre`,`fecha_creacion`,	`fecha_actualizacion`)
 		VALUES
@@ -1136,7 +1136,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`especie`
 (
 `nombre`,
@@ -1180,7 +1180,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-   
+
 		INSERT INTO `vet-alert`.`estado`
 		(`descripcion`,`fecha_creacion`,	`fecha_actualizacion`)
 		VALUES
@@ -1208,7 +1208,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`evento`
 		(`nombre`,`fecha_creacion`,	`fecha_actualizacion`)
 		VALUES
@@ -1236,7 +1236,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`log`
 (
 `fecha`,
@@ -1280,7 +1280,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertaMonitoreoPaciente`(in veces 
 Begin
 	declare i int;
     set i = 0;
-    while i<veces do    
+    while i<veces do
 		INSERT INTO `vet-alert`.`monitoreo_paciente`
 (
 `promedioTemperatura`,
@@ -1328,7 +1328,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`paciente`
 (
 `nombre`,
@@ -1373,7 +1373,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`permiso`
 		(`descripcion`,`fecha_creacion`,	`fecha_actualizacion`)
 		VALUES
@@ -1403,7 +1403,7 @@ Begin
     SET @myquery = sent ;
     PREPARE stmt2 FROM @myquery;
     while i<veces do
-		EXECUTE stmt2;		
+		EXECUTE stmt2;
 	end while;
 END ;;
 DELIMITER ;
@@ -1426,7 +1426,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 		INSERT INTO `vet-alert`.`rol`
 		(`descripcion`,`fecha_creacion`,	`fecha_actualizacion`)
 		VALUES
@@ -1453,7 +1453,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertaRolPermiso`(in veces int)
 Begin
 	declare i int;
     set i = 0;
-    while i<veces do    
+    while i<veces do
 		insert into rol_permiso (fecha_creacion, fecha_actualizacion, id_rol, id_permiso) values (now(),now(),1,1);
 	set i=i+1;
 	end while;
@@ -1478,7 +1478,7 @@ Begin
 	declare i int;
     set i = 0;
     while i<veces do
-    
+
 	INSERT INTO `vet-alert`.`usuario`
 (
 `nombre`,
@@ -1571,23 +1571,23 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Reporte_verLogs`(IN inicio DATETIME, IN fin DATETIME)
 BEGIN
-select l.fecha as 'Fecha evento', 
-e.nombre as 'Tipo de evento', 
-l.tabla_modificada as 'Tabla afectada', 
+select l.fecha as 'Fecha evento',
+e.nombre as 'Tipo de evento',
+l.tabla_modificada as 'Tabla afectada',
 
 case when l.id_usuario IS NULL
 	then '-'
 	else l.id_usuario
-end as 'Usuario_id', 
+end as 'Usuario_id',
 case when u.nombre IS NULL
 	then '-'
 	else u.nombre
-end as 'Usuario_nombre', 
+end as 'Usuario_nombre',
 
 case when l.valor_antiguo IS NULL
 	then '-'
 	else l.valor_antiguo
-end as 'valor_antiguo', 
+end as 'valor_antiguo',
 case when l.valor_nuevo IS NULL
 	then '-'
 	else l.valor_nuevo
@@ -1619,7 +1619,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Reporte_VerMonitoreoPaciente`(IN inicio DATETIME, IN fin DATETIME)
 BEGIN
-select p.id as 'id_paciente', p.nombre as nombre_paciente, m.promedioTemperatura,  m.promedioPpm, m.promedioMovHora, 
+select p.id as 'id_paciente', p.nombre as nombre_paciente, m.promedioTemperatura,  m.promedioPpm, m.promedioMovHora,
 m.estadoTemperatura, m.estadoMovimiento,m.estadoPPm, m.estadoPaciente, a.id as 'id_apoderado', concat(a.nombre,' ',a.apellido) as nombre_apoderado from monitoreo_paciente m
 inner join paciente p on
 m.id_paciente = p.id
@@ -1670,7 +1670,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_verMonitoreoPaciente`(IN inicio DATE, IN fin DATE)
 BEGIN
-select p.nombre as nombre_paciente, m.promedioTemperatura, m.estadoTemperatura, m.promedioPpm, m.promedioMovHora, 
+select p.nombre as nombre_paciente, m.promedioTemperatura, m.estadoTemperatura, m.promedioPpm, m.promedioMovHora,
 m.estadoMovimiento, m.estadoPaciente, concat(a.nombre+' '+a.apellido) as nombre_apoderado from monitoreo_paciente m
 inner join paciente p on
 m.id_paciente = p.id
