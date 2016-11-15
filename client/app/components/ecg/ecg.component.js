@@ -168,9 +168,10 @@ export default class ecgComponent {
     }
     if (!changedObject.valor || !changedObject.x) return;
     if (!isFinite(changedObject.valor.currentValue)) return;
+    const y = changedObject.valor.currentValue;
     const object = {
       x: changedObject.x.currentValue,
-      y: changedObject.valor.currentValue
+      y: y > 360 && y < 380 ? 370 : y
     };
     this.addDataPoint(object);
   }
