@@ -185,8 +185,8 @@ DROP TABLE IF EXISTS `comuna`;
 CREATE TABLE `comuna` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(70) DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT,
-  `fecha_actualizacion` datetime DEFAULT,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime,
   `id_ciudad` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_ciudad` (`id_ciudad`),
@@ -219,8 +219,8 @@ CREATE TABLE `especie` (
   `maxPpm` int(11) DEFAULT NULL,
   `minTemp` float DEFAULT NULL,
   `maxTemp` float DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -350,8 +350,8 @@ DROP TABLE IF EXISTS `estado`;
 CREATE TABLE `estado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(45) DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -471,9 +471,9 @@ CREATE TABLE `monitoreo_paciente` (
   `estadoMovimiento` varchar(15) DEFAULT NULL,
   `estadoPaciente` varchar(15) DEFAULT NULL,
   `estadoPPM` varchar(15) DEFAULT NULL,
-  `fecha` datetime DEFAULT,
-  `fecha_creacion` datetime NOT NULL DEFAULT,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT,
+  `fecha` datetime,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   `id_paciente` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_paciente` (`id_paciente`)
@@ -502,8 +502,8 @@ CREATE TABLE `paciente` (
   `annoNacimiento` int(11) DEFAULT NULL,
   `carnet` int(11) DEFAULT NULL,
   `sexo` char(6) DEFAULT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   `id_apoderado` int(11) NOT NULL,
   `id_especie` int(11) NOT NULL,
   `id_monitor` int(11) DEFAULT NULL,
@@ -742,8 +742,8 @@ DROP TABLE IF EXISTS `rol`;
 CREATE TABLE `rol` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(45) NOT NULL,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT,
-  `fecha_creacion` datetime NOT NULL DEFAULT,
+  `fecha_actualizacion` datetime NOT NULL,
+  `fecha_creacion` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -846,8 +846,8 @@ DROP TABLE IF EXISTS `rol_permiso`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `rol_permiso` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fecha_creacion` datetime NOT NULL DEFAULT,
-  `fecha_actualizacion` datetime NOT NULL DEFAULT,
+  `fecha_creacion` datetime NOT NULL,
+  `fecha_actualizacion` datetime NOT NULL,
   `id_rol` int(11) NOT NULL,
   `id_permiso` int(11) NOT NULL,
   PRIMARY KEY (`id`),
