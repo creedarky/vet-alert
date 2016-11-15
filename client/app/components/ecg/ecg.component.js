@@ -6,6 +6,8 @@ import isFinite from 'lodash/isFinite';
 export default class ecgComponent {
   /*@ngInject*/
   constructor($element) {
+    this.audio = new Audio('/assets/audio/beep.ogg');
+
     this.options = {
       margin: {
         top: 0,
@@ -161,13 +163,16 @@ export default class ecgComponent {
 
   $onChanges(changedObject) {
     if (!this.initialized) return;
+    if (changedObject.beep && changedObject.beep.currentValue) {
+      this.audio.play();
+    }
     if (!changedObject.valor || !changedObject.x) return;
     if (!isFinite(changedObject.valor.currentValue)) return;
     const object = {
       x: changedObject.x.currentValue,
       y: changedObject.valor.currentValue
     };
-    this.addDataPoint(object)
+    this.addDataPoint(object);
   }
 
   redraw() {
