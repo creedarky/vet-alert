@@ -35,7 +35,6 @@ exports.default = function (socketio, cache) {
   };
 
   var addData = function addData(data) {
-    console.log(data);
     if (data.tipo !== 'estado') {
       socketio.sockets.emit('data', data);
       return;
@@ -201,9 +200,7 @@ exports.default = function (socketio, cache) {
         parsedData = JSON.parse(data);
         createMonitor(parsedData.idMonitor);
         addData(parsedData);
-      } catch (e) {
-        // console.error('data incorrect received');
-      }
+      } catch (e) {}
     });
   });
 };
