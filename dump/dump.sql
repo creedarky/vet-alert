@@ -416,7 +416,7 @@ CREATE TABLE `log` (
   CONSTRAINT `log_ibfk_1` FOREIGN KEY (`id_evento`) REFERENCES `evento` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `log_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `log_ibfk_3` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -425,7 +425,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (9,'2016-11-12 19:11:37',2,NULL,4,'PACIENTE','nombre: Firu; ','nombre: Firu II; ',4),(10,'2016-11-13 22:19:54',2,NULL,4,'PACIENTE','id_especie : 7; ','id_especie : 2; ',4),(11,'2016-11-14 20:29:59',2,NULL,NULL,'ESPECIE','minPpm : 90;  maxPpm: 100;  minTemp: 38.5;  maxTemp: 38.8; ','minPpm : 70; maxPpm: 120; minTemp: 37.9; maxTemp: 39.9; ',2),(12,'2016-11-14 20:29:59',2,NULL,NULL,'ESPECIE',' minTemp: 38.6;  maxTemp: 38.6; ','minTemp: 38.1; maxTemp: 39.2; ',3),(13,'2016-11-14 21:26:07',1,NULL,5,'PACIENTE',NULL,'Firu III',5);
+INSERT INTO `log` VALUES (9,'2016-11-12 19:11:37',2,NULL,4,'PACIENTE','nombre: Firu; ','nombre: Firu II; ',4),(10,'2016-11-13 22:19:54',2,NULL,4,'PACIENTE','id_especie : 7; ','id_especie : 2; ',4),(11,'2016-11-14 20:29:59',2,NULL,NULL,'ESPECIE','minPpm : 90;  maxPpm: 100;  minTemp: 38.5;  maxTemp: 38.8; ','minPpm : 70; maxPpm: 120; minTemp: 37.9; maxTemp: 39.9; ',2),(12,'2016-11-14 20:29:59',2,NULL,NULL,'ESPECIE',' minTemp: 38.6;  maxTemp: 38.6; ','minTemp: 38.1; maxTemp: 39.2; ',3),(13,'2016-11-14 21:26:07',1,NULL,5,'PACIENTE',NULL,'Firu III',5),(14,'2016-11-14 21:39:30',2,NULL,5,'PACIENTE','','',5);
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -524,7 +524,7 @@ CREATE TABLE `paciente` (
 
 LOCK TABLES `paciente` WRITE;
 /*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
-INSERT INTO `paciente` VALUES (4,'Firu II',2006,0,'macho','2016-11-10 20:56:29','2016-11-10 20:56:29',155871865,2,1,1),(5,'Firu III',2010,0,'macho','2016-11-10 00:00:00','2016-11-10 00:00:00',155871865,2,2,0);
+INSERT INTO `paciente` VALUES (4,'Firu II',2006,0,'macho','2016-11-10 20:56:29','2016-11-10 20:56:29',155871865,2,1,1),(5,'Firu III',2010,0,'macho','2016-11-10 00:00:00','2016-11-10 00:00:00',155871865,2,2,1);
 /*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1691,4 +1691,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-14 21:27:25
+-- Dump completed on 2016-11-14 21:39:47
