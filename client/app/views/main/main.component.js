@@ -13,7 +13,6 @@ export class MainController {
   }
 
   $onInit() {
-    console.log(this.monitores);
     this.pacientes = this.pacienteService.getPacientes();
     this.socket.on('updated-patients', this.updatePatients);
     this.socket.on('data', this.addData);
@@ -25,7 +24,6 @@ export class MainController {
   }
 
   addData = (data) => {
-    console.log('add data', data);
     const paciente = this.pacientes.find(p => p.id === data.idPaciente);
     if (!paciente) {
       return;
