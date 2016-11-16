@@ -1,0 +1,64 @@
+<div class="container">
+
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>
+        Paciente
+      </th>
+      <th>
+        Apoderado
+      </th>
+      <th>
+        Estado Paciente
+      </th>
+      <th>
+        Temperatura
+      </th>
+      <th>
+        Promedio Temperatura
+      </th>
+      <th>
+        Latidos por minuto
+      </th>
+      <th>
+        Promedio Latidos por minuto
+      </th>
+      <th>
+        Movimiento
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="monitoreo in $ctrl.monitoreos">
+      <td>
+        {{ monitoreo.nombre_paciente }}
+      </td>
+      <td>
+        {{ monitoreo.nombre_apoderado }}
+      </td>
+      <td>
+        <div class="Main-status-ball Main-status-ball--{{monitoreo.estadoPaciente}}" ></div>
+      </td>
+      <td>
+        {{ monitoreo.estadoTemperatura | number : 1}}
+      </td>
+      <td>
+        {{ monitoreo.promedioTemperatura | number : 1 }}
+      </td>
+      <td>
+        {{ monitoreo.estadoPPm | number : 0 }}
+      </td>
+      <td>
+        {{ monitoreo.promedioPpm | number : 0 }}
+      </td>
+      <td>
+        {{ monitoreo.estadoMovimiento === '0' ? 'Inactivo' : 'En Movimiento' }}
+      </td>
+    </tr>
+    </tbody>
+
+  </table>
+</div>
+

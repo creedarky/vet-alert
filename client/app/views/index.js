@@ -4,6 +4,7 @@ import paciente from './paciente/paciente.component';
 import especie from './especie/';
 import admin from './admin/';
 import account from './account/';
+import reportes from './reporte/reporte-monitoreo.component';
 
-export default angular.module('webappApp.views', [root, main, paciente, especie, admin, account])
+export default angular.module('webappApp.views', [root, main, paciente, especie, admin, account, reportes])
   .name;
