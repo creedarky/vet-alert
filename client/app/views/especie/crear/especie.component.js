@@ -1,7 +1,7 @@
 'use strict';
 
 
-export class EspecieComponent {
+export default class EspecieComponent {
   /*@ngInject*/
   defaultEspecie = {
     nombre: '',

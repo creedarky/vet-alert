@@ -47,7 +47,10 @@
           {{ especie.maxPpm }}
         </td>
         <td>
-
+          <div class="row">
+            <a class="btn btn-primary col-sm-5" ui-sref="especie-edit({id: especie.id})"><i class="fa fa-pencil"></i></a>
+            <button class="btn btn-danger col-sm-offset-1 col-sm-5" ng-click="$ctrl.eliminarEspecie(especie)"><i class="fa fa-trash"></i></button>
+          </div>
         </td>
       </tr>
     </tbody>

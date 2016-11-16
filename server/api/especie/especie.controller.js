@@ -74,7 +74,7 @@ export function index(req, res) {
 export function show(req, res) {
   return Especie.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(handleEntityNotFound(res))
@@ -94,27 +94,30 @@ export function create(req, res) {
 
 // Upserts the given Especie in the DB at the specified ID
 export function upsert(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
+  // if (req.body.id) {
+  //   delete req.body.id;
+  // }
 
   return Especie.upsert(req.body, {
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(respondWithResult(res))
+    .then((result) => {
+      insertLog(req);
+      respondWithResult(res, 201)(result);
+    })
     .catch(handleError(res));
 }
 
 // Updates an existing Especie in the DB
 export function patch(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
   return Especie.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(handleEntityNotFound(res))
@@ -127,10 +130,11 @@ export function patch(req, res) {
 export function destroy(req, res) {
   return Especie.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
+    .then(() => insertLog(req))
     .catch(handleError(res));
 }

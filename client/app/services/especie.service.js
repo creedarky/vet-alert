@@ -7,5 +7,9 @@ export default function especieService($resource) {
   'ngInject';
 
 
-  return $resource('/api/especies/', {}, {});
+  return $resource('/api/especies/:especieId', {especieId: '@id'}, {
+    update: {
+      method: 'PUT'
+    }
+  });
 }

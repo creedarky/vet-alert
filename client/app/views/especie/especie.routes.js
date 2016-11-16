@@ -10,5 +10,9 @@ export default function($stateProvider) {
     .state('especie-list', {
       url: '/especies',
       template: '<especie-list></especie-list>'
+    })
+    .state('especie-edit', {
+      url: '/especie/:id',
+      template: '<especie-edit></especie-edit>'
     });
 }

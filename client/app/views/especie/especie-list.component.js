@@ -10,4 +10,12 @@ export default class EspecieListComponent {
     this.especies = especieService.query();
     console.log(this.especies);
   }
+
+  eliminarEspecie(especie) {
+    console.log(especie);
+    especie.$remove().then(() => {
+      this.especies = this.especies.filter(e => e.id !== especie.id);
+    });
+
+  }
 }
