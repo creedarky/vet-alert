@@ -11,7 +11,7 @@
 'use strict';
 
 import jsonpatch from 'fast-json-patch';
-import {Especie} from '../../sqldb';
+import {Especie, insertLog} from '../../sqldb';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -85,7 +85,10 @@ export function show(req, res) {
 // Creates a new Especie in the DB
 export function create(req, res) {
   return Especie.create(req.body)
-    .then(respondWithResult(res, 201))
+    .then((result) => {
+      insertLog(req);
+      respondWithResult(res, 201)(result);
+    })
     .catch(handleError(res));
 }
 

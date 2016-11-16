@@ -64,7 +64,7 @@ export function hasRole(roleRequired) {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
+      if (req.user.rol.id === roleRequired) {
         return next();
       } else {
         return res.status(403).send('Forbidden');
@@ -91,7 +91,7 @@ export function hasPermission(permissionRequired) {
  */
 export function signToken(id, role) {
   return jwt.sign({ id, role }, config.secrets.session, {
-    expiresIn: 60 * 60 * 5
+    expiresIn: '5d'
   });
 }
 
@@ -102,7 +102,7 @@ export function setTokenCookie(req, res) {
   if (!req.user) {
     return res.status(404).send('It looks like you aren\'t logged in, please try again.');
   }
-  var token = signToken(req.user.id, req.user.role);
+  var token = signToken(req.user.id, req.user.rol.id);
   res.cookie('token', token);
   res.redirect('/');
 }

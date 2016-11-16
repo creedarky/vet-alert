@@ -5,7 +5,7 @@ function localAuthenticate(User, email, password, done) {
   User.find({
     where: {
       email: email.toLowerCase()
-    }
+    },
   })
     .then(user => {
       if (!user) {

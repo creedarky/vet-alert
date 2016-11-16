@@ -7,11 +7,5 @@ export default function especieService($resource) {
   'ngInject';
 
 
-  return $resource('/api/especies/', {
-  }, {
-        create: {
-          method: 'POST'
-        }
-      }
-  );
+  return $resource('/api/especies/', {}, {});
 }

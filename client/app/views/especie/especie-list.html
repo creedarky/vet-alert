@@ -1,0 +1,56 @@
+<div class="container">
+  <a class="btn btn-primary" ui-sref="especie-crear">Crear Especie</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>
+          Nombre Comun
+        </th>
+        <th>
+          Nombre Científico
+        </th>
+        <th>
+          Temperatura Minima Cº
+        </th>
+        <th>
+          Temperatura Maxima Cº
+        </th>
+        <th>
+          Minimo Latidos por minuto
+        </th>
+        <th>
+          Maximo Latidos por minuto
+        </th>
+        <th>
+          Acción
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="especie in $ctrl.especies">
+        <td>
+          {{ especie.nombreComun }}
+        </td>
+        <td>
+          {{ especie.nombre }}
+        </td>
+        <td>
+          {{ especie.minTemp }}
+        </td>
+        <td>
+          {{ especie.maxTemp }}
+        </td>
+        <td>
+          {{ especie.minPpm }}
+        </td>
+        <td>
+          {{ especie.maxPpm }}
+        </td>
+        <td>
+
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
