@@ -47,7 +47,7 @@ export default function(socketio, cache) {
       socketio.sockets.emit('data', data);
       return;
     }
-
+    //console.log('Estoy transmitiendo',data);
     let monitor = getMonitor(data);
     let paciente = monitor.paciente;
 
@@ -198,6 +198,7 @@ export default function(socketio, cache) {
         parsedData = JSON.parse(data);
         createMonitor(parsedData.idMonitor);
         addData(parsedData);
+
       } catch (e) {
       }
     });

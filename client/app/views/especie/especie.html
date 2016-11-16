@@ -1,1 +1,75 @@
-<div>This is the especie view.</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Crear especies</h1>
+    </div>
+    <div class="col-sm-12">
+      <form class="form" name="especieform" ng-submit="vm.crearEspecie(especieform)" novalidate>
+
+        <div class="form-group" ng-class="{'has-success': especieform.nombreComun.$valid && vm.submitted,
+                                           'has-error'  : especieform.nombreComun.$invalid && vm.submitted }">
+          <label>Nombre Com&uacute;n</label>
+          <input type="text" name="nombreComun" class="form-control" ng-model="vm.especie.nombreComun" required>
+
+          <p class="help-block" ng-show="especieform.nombreComun.$error.required && vm.submitted">
+            Se requiere nombre comun
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': especieform.nombre.$valid && vm.submitted,
+                                           'has-error'  : especieform.nombre.$invalid && vm.submitted}">
+          <label><label>Nombre Cient&iacute;fico</label></label>
+          <input type="text" name="nombre" class="form-control" ng-model="vm.especie.nombre" required>
+          <p class="help-block" ng-show="especieform.nombre.$error.required && vm.submitted">
+            Se requiere nombre científico
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': especieform.minPpm.$valid && vm.submitted,
+                                           'has-error'  : especieform.minPpm.$invalid && vm.submitted }">
+          <label><label>M&iacute;nimo de latidos por minuto (PPM)</label></label>
+          <input type="number" name="minPpm" class="form-control" ng-model="vm.especie.minPpm" required>
+          <p class="help-block" ng-show="especieform.minPpm.$error.required && vm.submitted">
+            Se requiere mínimo de ppm
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': especieform.maxPpm.$valid && vm.submitted,
+                                           'has-error'  : especieform.maxPpm.$invalid && vm.submitted }">
+          <label><label>M&aacute;ximo de latidos por minuto (PPM)</label></label>
+          <input type="number" name="maxPpm" class="form-control" ng-model="vm.especie.maxPpm" required>
+          <p class="help-block" ng-show="especieform.maxPpm.$error.required && vm.submitted">
+            Se requiere máximo de ppm
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': especieform.minTemp.$valid && vm.submitted,
+                                           'has-error'  : especieform.minTemp.$invalid && vm.submitted }">
+          <label><label>Temperatura corporal m&iacute;nima(°C)</label></label>
+          <input type="number" name="minTemp" class="form-control" ng-model="vm.especie.minTemp" required>
+          <p class="help-block" ng-show="especieform.minTemp.$error.required && vm.submitted">
+            Se requiere temperatura mínima
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': especieform.maxTemp.$valid && vm.submitted,
+                                           'has-error'  : especieform.maxTemp.$invalid && vm.submitted }">
+
+          <label><label>Temperatura corporal m&aacute;xima(°C)</label></label>
+          <input type="number" name="maxTemp" class="form-control" ng-model="vm.especie.maxTemp" required>
+          <p class="help-block" ng-show="especieform.maxTemp.$error.required && vm.submitted">
+            Se requiere temperatura máxima
+          </p>
+        </div>
+
+        <div>
+          <button class="btn btn-inverse btn-lg btn-login" type="submit">
+            Crear
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
