@@ -21,7 +21,7 @@ export default function(socketio, cache) {
   const isWin = os.platform() === 'win32';
   const prefix = isWin ? '\\\\.\\' : '';
   let pacientes = cache.getCurrentPatients();
-  let sp = {};
+  let sp = {}; //Serial port
   let monitorData = {};
   let monitoresActivos = {};
   cache.emitter.on('update-patients', (pacientesActualizados) => {
@@ -98,10 +98,10 @@ export default function(socketio, cache) {
         MonitoreoPaciente.create({
           promedioTemperatura: promedios.promedioTemp,
           promedioPpm: promedios.promedioPpm,
-          promedioMovHora: 0,
+          estadoMovimiento: data.movimiento,
           estadoTemperatura: data.temperatura,
-          estadoMovimiento: data.latidos,
           estadoPaciente: monitor.estado,
+          estadoPpm: data.latidos,
           id_paciente: monitor.paciente.id
         });
       }
@@ -133,6 +133,8 @@ export default function(socketio, cache) {
     let totalTemperatura = data
       .map(d => d.temperatura)
       .reduce((a, b) => a + b, 0);
+
+
     return {
       promedioTemp: totalTemperatura / data.length,
       promedioPpm: totalLatidos / data.length

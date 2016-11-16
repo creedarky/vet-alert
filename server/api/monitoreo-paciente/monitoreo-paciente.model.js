@@ -14,6 +14,7 @@ export default function(sequelize, DataTypes) {
     estadoTemperatura: DataTypes.FLOAT,
     estadoMovimiento: DataTypes.STRING,
     estadoPaciente: DataTypes.STRING,
+    estadoPpm: DataTypes.INTEGER
   }, {
     underscored: true,
     underscoredAll: true,

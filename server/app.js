@@ -12,13 +12,13 @@ import cache from './cache'
 
 const { Paciente, Especie, Monitor } = sqldb;
 
-// Populate databases with sample data
+// Inyectar datos de prueba
 if (config.seedDB) {
   require('./config/seed');
 }
 
 // Setup server
-const app = express();
+const app = express(); //framework para apis
 const server = http.createServer(app);
 const socketio = require('socket.io')(server, {
   serveClient: config.env !== 'production',
