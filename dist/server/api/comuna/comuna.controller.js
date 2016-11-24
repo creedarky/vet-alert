@@ -84,14 +84,18 @@ function handleError(res, statusCode) {
 
 // Gets a list of Comunas
 function index(req, res) {
-  return _sqldb.Comuna.findAll().then(respondWithResult(res)).catch(handleError(res));
+  return _sqldb.Comuna.findAll({
+    include: [{
+      model: _sqldb.Ciudad, as: 'ciudad'
+    }]
+  }).then(respondWithResult(res)).catch(handleError(res));
 }
 
 // Gets a single Comuna from the DB
 function show(req, res) {
   return _sqldb.Comuna.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   }).then(handleEntityNotFound(res)).then(respondWithResult(res)).catch(handleError(res));
 }
@@ -103,25 +107,25 @@ function create(req, res) {
 
 // Upserts the given Comuna in the DB at the specified ID
 function upsert(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
 
   return _sqldb.Comuna.upsert(req.body, {
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   }).then(respondWithResult(res)).catch(handleError(res));
 }
 
 // Updates an existing Comuna in the DB
 function patch(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
   return _sqldb.Comuna.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   }).then(handleEntityNotFound(res)).then(patchUpdates(req.body)).then(respondWithResult(res)).catch(handleError(res));
 }
@@ -130,7 +134,7 @@ function patch(req, res) {
 function destroy(req, res) {
   return _sqldb.Comuna.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   }).then(handleEntityNotFound(res)).then(removeEntity(res)).catch(handleError(res));
 }

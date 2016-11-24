@@ -28,7 +28,8 @@ export class MainController {
     if (!paciente) {
       return;
     }
-    paciente[data.tipo] = data;
+    paciente[data.tipo] = Object.assign({}, paciente[data.tipo], data);
+    console.log(paciente[data.tipo]);
   };
 
   updatePatients = (pacientes) => {

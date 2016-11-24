@@ -22,7 +22,7 @@ export class RootController {
     if (!paciente) {
       return;
     }
-    paciente[data.tipo] = data;
+    paciente[data.tipo] = Object.assign({}, paciente[data.tipo], data);
     if (data.alerta) {
       let { alerta } = data;
       let alertaExistente = this.alertas.find(id => alerta.id === id);

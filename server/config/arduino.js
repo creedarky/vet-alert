@@ -47,11 +47,13 @@ export default function(socketio, cache) {
       socketio.sockets.emit('data', data);
       return;
     }
-    //console.log('Estoy transmitiendo',data);
+    console.log('latidos',data.latidos);
+    console.log('temperatura',data.temperatura);
     let monitor = getMonitor(data);
+    console.log('monitor', monitor.latidos.length);
     let paciente = monitor.paciente;
 
-    const status = calcularStatus(data, paciente.especie);
+    const status = calcularStatus(monitor, paciente.especie);
 
     let estado = ESTADOS.OK;
 
@@ -81,6 +83,7 @@ export default function(socketio, cache) {
     data.idPaciente = paciente.id;
     data.promedioTemp = monitor.promedioTemp;
     data.promedioPpm = monitor.promedioPpm;
+    console.log('to emit', data);
     socketio.sockets.emit('data', data);
   };
 
@@ -88,23 +91,6 @@ export default function(socketio, cache) {
     let monitor;
     if (monitorData[data.idMonitor]) {
       monitor = monitorData[data.idMonitor];
-      monitor.data.push(data);
-      if (monitor.data.length >= MAX_LENGTH) {
-        const promedios = calcularPromedio(monitor.data);
-        monitor = Object.assign({}, monitor, promedios);
-        monitor.data = [];
-        monitor.data.length = 0;
-        setMonitor(monitor);
-        MonitoreoPaciente.create({
-          promedioTemperatura: promedios.promedioTemp,
-          promedioPpm: promedios.promedioPpm,
-          estadoMovimiento: data.movimiento,
-          estadoTemperatura: data.temperatura,
-          estadoPaciente: monitor.estado,
-          estadoPpm: data.latidos,
-          id_paciente: monitor.paciente.id
-        });
-      }
     } else {
       let paciente = pacientes.find(p => {
         return p.monitor.id === data.idMonitor
@@ -112,12 +98,45 @@ export default function(socketio, cache) {
       monitorData[data.idMonitor] = {
         id: data.idMonitor,
         paciente: paciente,
-        data: [data],
-        promedioTemp: data.temperatura,
-        promedioPpm: data.latidos
+        latidos: [],
+        temperaturas: [],
+        promedioTemp: 0,
+        promedioPpm: 0,
+        latido: null,
+        temperatura: null,
+        movimiento: null
       };
+
       monitor = monitorData[data.idMonitor];
     }
+
+    if (data.latidos) {
+      monitor.latidos.push(data.latidos);
+      monitor.latido = data.latidos;
+    } else if (data.temperatura) {
+      monitor.temperaturas.push(data.temperatura);
+      monitor.temperatura = data.temperatura;
+      monitor.movimiento = data.movimiento;
+    }
+
+    if (monitor.latidos.length >= MAX_LENGTH || monitor.temperaturas.length >= MAX_LENGTH) {
+      const promedios = calcularPromedio(monitor.latidos, monitor.temperaturas);
+      monitor = Object.assign({}, monitor, promedios);
+      monitor.latidos = [];
+      monitor.temperaturas = [];
+
+      MonitoreoPaciente.create({
+        promedioTemperatura: promedios.promedioTemp,
+        promedioPpm: promedios.promedioPpm,
+        estadoMovimiento: monitor.movimiento,
+        estadoTemperatura: monitor.temperatura,
+        estadoPaciente: monitor.estado,
+        estadoPpm: monitor.latido,
+        id_paciente: monitor.paciente.id
+      });
+    }
+
+    setMonitor(monitor);
 
     return monitor
   };
@@ -126,23 +145,20 @@ export default function(socketio, cache) {
     monitorData[monitor.id] = monitor;
   };
 
-  const calcularPromedio = (data) => {
-    let totalLatidos = data
-      .map(d => d.latidos)
+  const calcularPromedio = (latidos, temperaturas) => {
+    let totalLatidos = latidos
       .reduce((a, b) => a + b, 0);
-    let totalTemperatura = data
-      .map(d => d.temperatura)
+    let totalTemperatura = temperaturas
       .reduce((a, b) => a + b, 0);
-
 
     return {
-      promedioTemp: totalTemperatura / data.length,
-      promedioPpm: totalLatidos / data.length
+      promedioTemp: totalTemperatura / temperaturas.length,
+      promedioPpm: totalLatidos / latidos.length
     };
   };
 
-  const calcularStatus = (data, especie) => {
-    const { temperatura, latidos } = data;
+  const calcularStatus = (monitor, especie) => {
+    const { temperatura, latido } = monitor;
     const { maxTemp, minTemp, maxPpm, minPpm } = especie;
     let porcentajeTemperatura = 0;
     let porcentajeLatidos = 0;
@@ -152,10 +168,10 @@ export default function(socketio, cache) {
       porcentajeTemperatura = (temperatura * 100 / minTemp) - 100;
     }
 
-    if (latidos > maxPpm) {
-      porcentajeLatidos = (latidos * 100 / maxPpm) - 100;
-    } else if (latidos < minPpm) {
-      porcentajeLatidos = (latidos * 100 / minPpm) - 100;
+    if (latido > maxPpm) {
+      porcentajeLatidos = (latido * 100 / maxPpm) - 100;
+    } else if (latido < minPpm) {
+      porcentajeLatidos = (latido * 100 / minPpm) - 100;
     }
     return  {
       porcentajeLatidos,
@@ -202,6 +218,7 @@ export default function(socketio, cache) {
         addData(parsedData);
 
       } catch (e) {
+        console.log(e);
       }
     });
   });

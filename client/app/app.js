@@ -36,7 +36,7 @@ angular.module('webappApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-i
   .config(routeConfig)
   .config(function(NotificationProvider) {
     NotificationProvider.setOptions({
-      delay: null,
+      delay: 30000,
       startTop: 20,
       startRight: 10,
       verticalSpacing: 20,

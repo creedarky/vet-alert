@@ -22,8 +22,8 @@ export default class ecgComponent {
       xMax: 3000,
       xMajorTicks: 1000,
 
-      yMin: 0,
-      yMax: 1023
+      yMin: -512,
+      yMax: 768
     };
     this.$element = $element;
     this.initSvg();
@@ -163,15 +163,16 @@ export default class ecgComponent {
 
   $onChanges(changedObject) {
     if (!this.initialized) return;
-    if (changedObject.beep && changedObject.beep.currentValue) {
-      this.audio.play();
-    }
     if (!changedObject.valor || !changedObject.x) return;
     if (!isFinite(changedObject.valor.currentValue)) return;
-    const y = changedObject.valor.currentValue;
+    let y = changedObject.valor.currentValue;
+    y = y > -40 && y < 40 ? 0 : y
+    if (changedObject.beep && changedObject.beep.currentValue && y) {
+      this.audio.play();
+    }
     const object = {
       x: changedObject.x.currentValue,
-      y: y > 330 && y < 380 ? 350 : y
+      y
     };
     this.addDataPoint(object);
   }
