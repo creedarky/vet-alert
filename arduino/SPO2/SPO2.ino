@@ -44,5 +44,5 @@ void loop()
   root.printTo(buffer, sizeof(buffer));
   Serial.println(buffer);
   beep = 0;
-  delay (50);
+  delay (20);
 }
