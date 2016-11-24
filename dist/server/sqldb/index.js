@@ -65,5 +65,10 @@ db.Permiso.belongsToMany(db.Rol, {
   foreignKey: 'id_permiso',
   constraints: false
 });
+
+db.insertLog = function (req) {
+  db.sequelize.query('CALL sp_identifica_trx(' + req.user.id + ')');
+};
+
 module.exports = db;
 //# sourceMappingURL=index.js.map

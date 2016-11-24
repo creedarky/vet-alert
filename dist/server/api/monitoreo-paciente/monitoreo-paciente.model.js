@@ -17,7 +17,8 @@ exports.default = function (sequelize, DataTypes) {
     promedioMovHora: DataTypes.FLOAT,
     estadoTemperatura: DataTypes.FLOAT,
     estadoMovimiento: DataTypes.STRING,
-    estadoPaciente: DataTypes.STRING
+    estadoPaciente: DataTypes.STRING,
+    estadoPpm: DataTypes.INTEGER
   }, {
     underscored: true,
     underscoredAll: true,

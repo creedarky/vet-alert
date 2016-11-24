@@ -23,9 +23,9 @@ exports.default = function (app) {
   app.use('/api/comunas', require('./api/comuna'));
   app.use('/api/apoderados', require('./api/apoderado'));
   app.use('/api/users', require('./api/user'));
+  app.use('/api/reportes', require('./api/reporte'));
 
   app.use('/auth', require('./auth').default);
-
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*').get(_errors2.default[404]);
 

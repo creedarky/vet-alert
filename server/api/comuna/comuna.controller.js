@@ -11,7 +11,7 @@
 'use strict';
 
 import jsonpatch from 'fast-json-patch';
-import {Comuna} from '../../sqldb';
+import {Comuna, Ciudad} from '../../sqldb';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -65,7 +65,13 @@ function handleError(res, statusCode) {
 
 // Gets a list of Comunas
 export function index(req, res) {
-  return Comuna.findAll()
+  return Comuna.findAll({
+    include: [
+      {
+        model: Ciudad, as: 'ciudad'
+      }
+    ]
+  })
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
@@ -74,7 +80,7 @@ export function index(req, res) {
 export function show(req, res) {
   return Comuna.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(handleEntityNotFound(res))
@@ -91,13 +97,13 @@ export function create(req, res) {
 
 // Upserts the given Comuna in the DB at the specified ID
 export function upsert(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
 
   return Comuna.upsert(req.body, {
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(respondWithResult(res))
@@ -106,12 +112,12 @@ export function upsert(req, res) {
 
 // Updates an existing Comuna in the DB
 export function patch(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
   return Comuna.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(handleEntityNotFound(res))
@@ -124,7 +130,7 @@ export function patch(req, res) {
 export function destroy(req, res) {
   return Comuna.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(handleEntityNotFound(res))

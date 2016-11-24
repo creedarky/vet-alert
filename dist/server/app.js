@@ -34,14 +34,14 @@ var Paciente = _sqldb2.default.Paciente;
 var Especie = _sqldb2.default.Especie;
 var Monitor = _sqldb2.default.Monitor;
 
-// Populate databases with sample data
+// Inyectar datos de prueba
 
 if (_environment2.default.seedDB) {
   require('./config/seed');
 }
 
 // Setup server
-var app = (0, _express2.default)();
+var app = (0, _express2.default)(); //framework para apis
 var server = _http2.default.createServer(app);
 var socketio = require('socket.io')(server, {
   serveClient: _environment2.default.env !== 'production',

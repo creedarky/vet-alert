@@ -27,7 +27,7 @@ export default class EspecieComponent {
       this.submitted = true;
       this.especieService.save(this.especie).$promise.then(() => {
         this.submitted = false;
-        this.especie = Object(this.defaultEspecie);
+        this.especie = Object.assign({}, this.defaultEspecie);
       })
       .catch(err => {
         err = err.data;

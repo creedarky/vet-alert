@@ -15,7 +15,7 @@ exports.default = function (socketio, cache) {
   var isWin = _os2.default.platform() === 'win32';
   var prefix = isWin ? '\\\\.\\' : '';
   var pacientes = cache.getCurrentPatients();
-  var sp = {};
+  var sp = {}; //Serial port
   var monitorData = {};
   var monitoresActivos = {};
   cache.emitter.on('update-patients', function (pacientesActualizados) {
@@ -39,7 +39,7 @@ exports.default = function (socketio, cache) {
       socketio.sockets.emit('data', data);
       return;
     }
-
+    //console.log('Estoy transmitiendo',data);
     var monitor = getMonitor(data);
     var paciente = monitor.paciente;
 
@@ -91,10 +91,10 @@ exports.default = function (socketio, cache) {
         _sqldb.MonitoreoPaciente.create({
           promedioTemperatura: promedios.promedioTemp,
           promedioPpm: promedios.promedioPpm,
-          promedioMovHora: 0,
+          estadoMovimiento: data.movimiento,
           estadoTemperatura: data.temperatura,
-          estadoMovimiento: data.latidos,
           estadoPaciente: monitor.estado,
+          estadoPpm: data.latidos,
           id_paciente: monitor.paciente.id
         });
       }
@@ -130,6 +130,7 @@ exports.default = function (socketio, cache) {
     }).reduce(function (a, b) {
       return a + b;
     }, 0);
+
     return {
       promedioTemp: totalTemperatura / data.length,
       promedioPpm: totalLatidos / data.length

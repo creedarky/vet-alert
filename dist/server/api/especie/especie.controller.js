@@ -91,37 +91,43 @@ function index(req, res) {
 function show(req, res) {
   return _sqldb.Especie.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   }).then(handleEntityNotFound(res)).then(respondWithResult(res)).catch(handleError(res));
 }
 
 // Creates a new Especie in the DB
 function create(req, res) {
-  return _sqldb.Especie.create(req.body).then(respondWithResult(res, 201)).catch(handleError(res));
+  return _sqldb.Especie.create(req.body).then(function (result) {
+    (0, _sqldb.insertLog)(req);
+    respondWithResult(res, 201)(result);
+  }).catch(handleError(res));
 }
 
 // Upserts the given Especie in the DB at the specified ID
 function upsert(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
+  // if (req.body.id) {
+  //   delete req.body.id;
+  // }
 
   return _sqldb.Especie.upsert(req.body, {
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
-  }).then(respondWithResult(res)).catch(handleError(res));
+  }).then(function (result) {
+    (0, _sqldb.insertLog)(req);
+    respondWithResult(res, 201)(result);
+  }).catch(handleError(res));
 }
 
 // Updates an existing Especie in the DB
 function patch(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
   return _sqldb.Especie.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   }).then(handleEntityNotFound(res)).then(patchUpdates(req.body)).then(respondWithResult(res)).catch(handleError(res));
 }
@@ -130,8 +136,10 @@ function patch(req, res) {
 function destroy(req, res) {
   return _sqldb.Especie.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
-  }).then(handleEntityNotFound(res)).then(removeEntity(res)).catch(handleError(res));
+  }).then(handleEntityNotFound(res)).then(removeEntity(res)).then(function () {
+    return (0, _sqldb.insertLog)(req);
+  }).catch(handleError(res));
 }
 //# sourceMappingURL=especie.controller.js.map

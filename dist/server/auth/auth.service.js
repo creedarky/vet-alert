@@ -82,7 +82,7 @@ function hasRole(roleRequired) {
   }
 
   return (0, _composableMiddleware2.default)().use(isAuthenticated()).use(function meetsRequirements(req, res, next) {
-    if (_environment2.default.userRoles.indexOf(req.user.role) >= _environment2.default.userRoles.indexOf(roleRequired)) {
+    if (req.user.rol.id === roleRequired) {
       return next();
     } else {
       return res.status(403).send('Forbidden');
@@ -109,7 +109,7 @@ function hasPermission(permissionRequired) {
  */
 function signToken(id, role) {
   return _jsonwebtoken2.default.sign({ id: id, role: role }, _environment2.default.secrets.session, {
-    expiresIn: 60 * 60 * 5
+    expiresIn: '5d'
   });
 }
 
@@ -120,7 +120,7 @@ function setTokenCookie(req, res) {
   if (!req.user) {
     return res.status(404).send('It looks like you aren\'t logged in, please try again.');
   }
-  var token = signToken(req.user.id, req.user.role);
+  var token = signToken(req.user.id, req.user.rol.id);
   res.cookie('token', token);
   res.redirect('/');
 }
