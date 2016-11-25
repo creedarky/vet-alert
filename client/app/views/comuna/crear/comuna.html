@@ -21,8 +21,7 @@
           <label><label>Ciudad</label></label>
           <select class="form-control" name="ciudad"
             ng-options="ciudad.id as ciudad.nombre for ciudad in $ctrl.ciudades track by ciudad.id"
-            ng-model="$ctrl.comuna.id_ciudad"
-          >
+            ng-model="$ctrl.comuna.id_ciudad">
             <option value="">Seleccione Ciudad...</option>
           </select>
 

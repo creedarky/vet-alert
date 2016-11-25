@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Editar apoderado</h1>
+    </div>
+    <div class="col-sm-12">
+      <form class="form" name="apoderadoForm" ng-submit="$ctrl.editarApoderado(apoderadoForm)" novalidate>
+
+        <div class="form-group" ng-class="{'has-success': apoderadoForm.nombre.$valid && $ctrl.submitted,
+                                           'has-error'  : apoderadoForm.nombre.$invalid && $ctrl.submitted}">
+          <label><label>Nombre</label></label>
+          <input type="text" name="nombre" class="form-control" ng-model="$ctrl.apoderado.nombre" required>
+          <p class="help-block" ng-show="apoderadoForm.nombre.$error.required && $ctrl.submitted">
+            Se requiere nombre
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': apoderadoForm.apellido.$valid && $ctrl.submitted,
+                                           'has-error'  : apoderadoForm.apellido.$invalid && $ctrl.submitted}">
+          <label><label>Apellido</label></label>
+          <input type="text" name="apellido" class="form-control" ng-model="$ctrl.apoderado.apellido" required>
+          <p class="help-block" ng-show="apoderadoForm.apellido.$error.required && $ctrl.submitted">
+            Se requiere apellido
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': apoderadoForm.comuna.$valid && $ctrl.submitted,
+                                           'has-error'  : apoderadoForm.comuna.$invalid && $ctrl.submitted}">
+          <label><label>Comuna</label></label>
+          <select class="form-control" name="comuna"
+                  ng-options="comuna as comuna.nombre for comuna in $ctrl.comunas track by comuna.id"
+                  ng-model="$ctrl.comuna"
+          >
+            <option value="">Seleccione Comuna...</option>
+          </select>
+
+          <p class="help-block" ng-show="apoderadoForm.comuna.$error.required && $ctrl.submitted">
+            Ciudad Requerido
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': apoderadoForm.telefono.$valid && $ctrl.submitted,
+                                           'has-error'  : apoderadoForm.telefono.$invalid && $ctrl.submitted}">
+          <label><label>Telefono</label></label>
+          <input type="text" name="telefono" class="form-control" ng-model="$ctrl.apoderado.telefono" required>
+          <p class="help-block" ng-show="apoderadoForm.telefono.$error.required && $ctrl.submitted">
+            Se requiere telefono
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': apoderadoForm.direccion.$valid && $ctrl.submitted,
+                                           'has-error'  : apoderadoForm.direccion.$invalid && $ctrl.submitted}">
+          <label><label>Dirección</label></label>
+          <input type="text" name="telefono" class="form-control" ng-model="$ctrl.apoderado.direccion" required>
+          <p class="help-block" ng-show="apoderadoForm.direccion.$error.required && $ctrl.submitted">
+            Se requiere dirección
+          </p>
+        </div>
+        <div>
+          <button class="btn btn-inverse btn-lg btn-login" type="submit">
+            Guardar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
