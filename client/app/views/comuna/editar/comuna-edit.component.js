@@ -10,8 +10,7 @@ export default class EditComunaComponent {
   constructor(comunaService, ciudadService, $stateParams, $state, $timeout) {
     this.ciudades = ciudadService.query({}, () => {
       this.comuna = comunaService.get({comunaId: $stateParams.id}, () => {
-        this.ciudad = this.ciudades.find(c => c.id = this.comuna.id_ciudad);
-        console.log(this.ciudad)
+        this.ciudad = this.ciudades.find(c => c.id === this.comuna.id_ciudad);
         this.comuna.id_ciudad = this.ciudad.id;
       });
       console.log(this.ciudades);

@@ -194,7 +194,7 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.(scss|sass)$/,
             loaders: ['style', 'css', 'sass'],
             include: [
-                path.resolve(__dirname, 'node_modules/bootstrap-sass/assets/stylesheets/*.scss'),
+                // path.resolve(__dirname, 'node_modules/bootstrap-sass/assets/stylesheets/*.scss'),
                 path.resolve(__dirname, 'client/app/app.scss')
             ]
 
@@ -256,6 +256,11 @@ module.exports = function makeWebpackConfig(options) {
         // Disabled when in test mode or not in build mode
         new ExtractTextPlugin('[name].[hash].css', {
             disable: !BUILD || TEST
+        }),
+        new webpack.ProvidePlugin({
+          $: "jquery",
+          jQuery: "jquery",
+          "window.jQuery": "jquery"
         })
     ];
 
