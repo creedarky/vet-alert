@@ -1,0 +1,59 @@
+<div class="container">
+  <a class="btn btn-primary" ui-sref="apoderado-crear">Crear Apoderado</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>
+          Rut
+        </th>
+        <th>
+          Nombre
+        </th>
+        <th>
+          Apellido
+        </th>
+        <th>
+          Telefono
+        </th>
+        <th>
+          Direccion
+        </th>
+        <th>
+          Comuna
+        </th>
+        <th>
+          Acción
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="apoderado in $ctrl.apoderados">
+        <td>
+          {{apoderado.id}}
+        </td>
+        <td>
+          {{ apoderado.nombre}}
+        </td>
+        <td>
+          {{ apoderado.apellido}}
+        </td>
+        <td>
+          {{ apoderado.telefono}}
+        </td>
+        <td>
+          {{ apoderado.direccion}}
+        </td>
+        <td>
+          {{ apoderado.comuna.nombre}}
+        </td>
+        <td>
+          <div class="row">
+            <a class="btn btn-primary col-sm-5" ui-sref="apoderado-edit({id: apoderado.id})"><i class="fa fa-pencil"></i></a>
+            <button class="btn btn-danger col-sm-offset-1 col-sm-5" ng-click="$ctrl.eliminarApoderado(apoderado)"><i class="fa fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

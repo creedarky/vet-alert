@@ -5,7 +5,8 @@ import especie from './especie/';
 import admin from './admin/';
 import account from './account/';
 import reportes from './reporte/reporte-monitoreo.component';
-import comuna from './comuna/'
+import comuna from './comuna/';
+import apoderado from './apoderado/';
 
-export default angular.module('webappApp.views', [root, main, paciente, especie, admin, account, reportes, comuna])
+export default angular.module('webappApp.views', [root, main, paciente, especie, admin, account, reportes, comuna, apoderado])
   .name;
