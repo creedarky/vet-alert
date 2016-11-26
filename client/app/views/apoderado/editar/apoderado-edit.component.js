@@ -7,12 +7,12 @@ export default class EditApoderadoComponent {
   submitted = false;
 
 
-  constructor(apoderadoService, comunaService, $stateParams, $state, $timeout) {
+  constructor(apoderadoService, comunaService, $stateParams, $state) {
     this.comunas = comunaService.query({}, () => {
       this.apoderado = apoderadoService.get({apoderadoId: $stateParams.id}, () => {
-        this.comuna = this.comunas.find(c => c.id = this.apoderado.id_comuna);
+        this.comuna = this.comunas.find(c => c.id === this.apoderado.id_comuna);
 
-        this.apoderado.id_comuna = this.comuna.id;
+        this.apoderado.id_comuna = this.comuna ? this.comuna.id : null;
       });
 
     });
