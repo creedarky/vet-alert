@@ -10,124 +10,84 @@
 
 'use strict';
 
-import jsonpatch from 'fast-json-patch';
-import {Apoderado} from '../../sqldb';
 
-function respondWithResult(res, statusCode) {
-  statusCode = statusCode || 200;
-  return function(entity) {
-    if (entity) {
-      return res.status(statusCode).json(entity);
-    }
-    return null;
-  };
-}
-
-function patchUpdates(patches) {
-  return function(entity) {
-    try {
-      jsonpatch.apply(entity, patches, /*validate*/ true);
-    } catch(err) {
-      return Promise.reject(err);
-    }
-
-    return entity.save();
-  };
-}
-
-function removeEntity(res) {
-  return function(entity) {
-    if (entity) {
-      return entity.destroy()
-        .then(() => {
-          res.status(204).end();
-        });
-    }
-  };
-}
-
-function handleEntityNotFound(res) {
-  return function(entity) {
-    if (!entity) {
-      res.status(404).end();
-      return null;
-    }
-    return entity;
-  };
-}
-
-function handleError(res, statusCode) {
-  statusCode = statusCode || 500;
-  return function(err) {
-    res.status(statusCode).send(err);
-  };
-}
+import apiUtils from '../apiutils';
+import {Apoderado, Comuna, insertLog} from '../../sqldb';
 
 // Gets a list of Apoderados
 export function index(req, res) {
-  return Apoderado.findAll()
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+  return Apoderado.findAll({
+    include: [
+      {
+        model: Comuna, as: 'comuna',
+      }
+    ]
+  })
+    .then(apiUtils.respondWithResult(res))
+    .catch(apiUtils.handleError(res));
 }
 
 // Gets a single Apoderado from the DB
 export function show(req, res) {
   return Apoderado.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then(apiUtils.handleEntityNotFound(res))
+    .then(apiUtils.respondWithResult(res))
+    .catch(apiUtils.handleError(res));
 }
 
 // Creates a new Apoderado in the DB
 export function create(req, res) {
   return Apoderado.create(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
+    .then(apiUtils.respondWithResult(res, 201))
+    .catch(apiUtils.handleError(res));
 }
 
 // Upserts the given Apoderado in the DB at the specified ID
 export function upsert(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
+  // if (req.body.id) {
+  //   delete req.body.id;
+  // }
 
   return Apoderado.upsert(req.body, {
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then((result) => {
+      insertLog(req);
+      apiUtils.respondWithResult(res, 201)(result);
+    })
+    .catch(apiUtils.handleError(res));
 }
 
 // Updates an existing Apoderado in the DB
 export function patch(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
   return Apoderado.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(handleEntityNotFound(res))
-    .then(patchUpdates(req.body))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then(apiUtils.handleEntityNotFound(res))
+    .then(apiUtils.patchUpdates(req.body))
+    .then(apiUtils.respondWithResult(res))
+    .catch(apiUtils.handleError(res));
 }
 
 // Deletes a Apoderado from the DB
 export function destroy(req, res) {
   return Apoderado.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
-    .catch(handleError(res));
+    .then(apiUtils.handleEntityNotFound(res))
+    .then(apiUtils.removeEntity(res))
+    .catch(apiUtils.handleError(res));
 }

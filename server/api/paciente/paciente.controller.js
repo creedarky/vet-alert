@@ -8,126 +8,87 @@
  * DELETE  /api/pacientes/:id          ->  destroy
  */
 
+
 'use strict';
 
-import jsonpatch from 'fast-json-patch';
-import {Paciente} from '../../sqldb';
+import apiUtils from '../apiutils';
+import {Paciente, Monitor, Especie, insertLog} from '../../sqldb';
 
-function respondWithResult(res, statusCode) {
-  statusCode = statusCode || 200;
-  return function(entity) {
-    if (entity) {
-      return res.status(statusCode).json(entity);
-    }
-    return null;
-  };
-}
-
-function patchUpdates(patches) {
-  return function(entity) {
-    try {
-      jsonpatch.apply(entity, patches, /*validate*/ true);
-    } catch(err) {
-      return Promise.reject(err);
-    }
-
-    return entity.save();
-  };
-}
-
-function removeEntity(res) {
-  return function(entity) {
-    if (entity) {
-      return entity.destroy()
-        .then(() => {
-          res.status(204).end();
-        });
-    }
-  };
-}
-
-function handleEntityNotFound(res) {
-  return function(entity) {
-    if (!entity) {
-      res.status(404).end();
-      return null;
-    }
-    return entity;
-  };
-}
-
-function handleError(res, statusCode) {
-  statusCode = statusCode || 500;
-  return function(err) {
-    res.status(statusCode).send(err);
-  };
-}
 
 // Gets a list of Pacientes
 export function index(req, res) {
-  return Paciente.findAll()
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+  return Paciente.findAll({
+    include: [
+      {
+        model: Especie, as: 'especie'
+      }
+    ]
+  })
+    .then(apiUtils.respondWithResult(res))
+    .catch(apiUtils.handleError(res));
 }
 
 // Gets a single Paciente from the DB
 export function show(req, res) {
   return Paciente.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then(apiUtils.handleEntityNotFound(res))
+    .then(apiUtils.respondWithResult(res))
+    .catch(apiUtils.handleError(res));
 }
 
 // Creates a new Paciente in the DB
 export function create(req, res) {
   return Paciente.create(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
+    .then(apiUtils.respondWithResult(res, 201))
+    .catch(apiUtils.handleError(res));
 }
 
 // Upserts the given Paciente in the DB at the specified ID
 export function upsert(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
+  // if (req.body.id) {
+  //   delete req.body.id;
+  // }
 
   return Paciente.upsert(req.body, {
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then((result) => {
+      insertLog(req);
+      apiUtils.respondWithResult(res, 201)(result);
+    })
+    .catch(apiUtils.handleError(res));
 }
 
 // Updates an existing Paciente in the DB
 export function patch(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
+  if (req.body.id) {
+    delete req.body.id;
   }
   return Paciente.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(handleEntityNotFound(res))
-    .then(patchUpdates(req.body))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then(apiUtils.handleEntityNotFound(res))
+    .then(apiUtils.patchUpdates(req.body))
+    .then(apiUtils.respondWithResult(res))
+    .catch(apiUtils.handleError(res));
 }
 
 // Deletes a Paciente from the DB
 export function destroy(req, res) {
   return Paciente.find({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
-    .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
-    .catch(handleError(res));
+    .then(apiUtils.handleEntityNotFound(res))
+    .then(apiUtils.removeEntity(res))
+    .catch(apiUtils.handleError(res));
 }

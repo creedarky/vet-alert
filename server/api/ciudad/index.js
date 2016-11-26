@@ -1,15 +1,18 @@
 'use strict';
 
-var express = require('express');
-var controller = require('./ciudad.controller');
+import express from 'express';
+import * as controller from './ciudad.controller';
+import * as auth from '../../auth/auth.service';
+import config from '../../config/environment';
 
 var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
-router.post('/', controller.create);
-router.put('/:id', controller.upsert);
-router.patch('/:id', controller.patch);
-router.delete('/:id', controller.destroy);
+router.post('/', auth.hasPermission(config.PERMISOS.MONITOR), controller.create);
+router.put('/:id', auth.hasPermission(config.PERMISOS.MONITOR), controller.upsert);
+router.patch('/:id', auth.hasPermission(config.PERMISOS.MONITOR), controller.patch);
+router.delete('/:id', auth.hasPermission(config.PERMISOS.MONITOR), controller.destroy);
 
 module.exports = router;
+
