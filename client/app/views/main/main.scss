@@ -20,6 +20,12 @@
     min-height: 15rem;
     font-size: 1.5rem;
 
+    &.active {
+      //background-color:
+      background-color: #EEEEEE !important;
+      border: 1px solid #009688 !important;
+    }
+
     &-data-container {
       margin-bottom: 1.5rem;
     }

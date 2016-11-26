@@ -199,7 +199,8 @@ module.exports = function makeWebpackConfig(options) {
             ]
 
 
-        }]
+        }
+        ]
     };
 
     config.module.postLoaders = [{

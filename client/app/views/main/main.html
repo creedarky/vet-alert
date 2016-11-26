@@ -2,7 +2,7 @@
   <div class="Main col-sm-4">
     <div class="Main-monitor" ng-repeat="paciente in $ctrl.pacientes" ng-click="$ctrl.onClick(paciente)">
       <h5>Monitor {{ paciente.monitor.id }}</h5>
-      <div class="Main-status btn btn-raised" ng-class="{active: paciente === $ctrl.paciente}">
+      <div class="Main-status well" ng-class="{active: paciente === $ctrl.paciente}">
         <div class="Main-status-data-container">
           <span class="Main-status-label">Paciente</span>
           <span class="Main-status-value"> {{  paciente.nombre }}</span>
