@@ -1,7 +1,7 @@
 'use strict';
 
 /*@ngInject*/
-export default function pacienteService() {
+export default function pacienteService($resource) {
 
   let pacientes = [];
 
@@ -13,9 +13,15 @@ export default function pacienteService() {
     pacientes = p;
   };
 
+  const api = $resource('/api/pacientes/:id', {id: '@id'}, {
+    update: {
+      method: 'PUT'
+    }
+  });
   return {
     getPacientes,
-    setPacientes
+    setPacientes,
+    api
   };
 }
 

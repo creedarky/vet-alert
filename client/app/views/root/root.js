@@ -39,6 +39,7 @@ export class RootController {
   }
 
   updatePatients(pacientes) {
+    console.log('pacientes actualizados', pacientes);
     this.pacientes = pacientes;
     this.pacienteService.setPacientes(pacientes);
   }

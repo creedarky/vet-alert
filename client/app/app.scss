@@ -24,14 +24,27 @@ $fa-font-path: '/assets/fonts/font-awesome/';
   background: rgb(217, 83, 79);
 }
 
+@media (min-width: 768px) {
+  .navbar .navbar-text {
+    float: left;
+    margin: 15px;
+  }
+}
+
+.table .btn.btn-raised {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
 // Component styles are injected through gulp
 /* inject:scss */
 @import 'components/ecg/ecg';
+@import 'components/paciente/paciente';
 @import 'views/admin/admin';
 @import 'views/apoderado/apoderado';
 @import 'views/especie/especie';
 @import 'views/main/main';
-@import 'views/paciente/paciente';
 @import 'views/reporte/reporte-monitoreo';
 @import '../components/footer/footer';
 @import '../components/modal/modal';

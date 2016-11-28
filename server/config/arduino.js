@@ -25,7 +25,14 @@ export default function(socketio, cache) {
   let monitorData = {};
   let monitoresActivos = {};
   cache.emitter.on('update-patients', (pacientesActualizados) => {
+    // console.log('pacientes actualizados????/????')
     pacientes = pacientesActualizados;
+    pacientes.forEach(p => {
+      const currentMonitor = monitorData[p.monitor.id];
+      if (currentMonitor && currentMonitor.paciente.id !== p.id) {
+        monitorData[p.monitor.id] = null;
+      }
+    });
     socketio.sockets.emit('updated-patients', pacientesActualizados);
   });
 
@@ -47,10 +54,7 @@ export default function(socketio, cache) {
       socketio.sockets.emit('data', data);
       return;
     }
-    console.log('latidos',data.latidos);
-    console.log('temperatura',data.temperatura);
     let monitor = getMonitor(data);
-    console.log('monitor', monitor.latidos.length);
     let paciente = monitor.paciente;
 
     const status = calcularStatus(monitor, paciente.especie);
@@ -83,7 +87,7 @@ export default function(socketio, cache) {
     data.idPaciente = paciente.id;
     data.promedioTemp = monitor.promedioTemp;
     data.promedioPpm = monitor.promedioPpm;
-    console.log('to emit', data);
+    // console.log('to emit', data);
     socketio.sockets.emit('data', data);
   };
 
@@ -196,7 +200,7 @@ export default function(socketio, cache) {
 
 
   arduinoScanner.on('arduinoFound', function (response) {
-    arduinoScanner.stop();
+    // arduinoScanner.stop();
     if (sp[response.serialNumber]) {
       return;
     }

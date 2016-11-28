@@ -1,6 +1,6 @@
 import root from './root/root';
 import main from './main/main.component';
-import paciente from './paciente/paciente.component';
+import paciente from './paciente/';
 import especie from './especie/';
 import admin from './admin/';
 import account from './account/';

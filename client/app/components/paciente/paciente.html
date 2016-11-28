@@ -1,21 +1,33 @@
-<div class="container">
+<div class="well" style="padding: 3rem;">
   <div class="row">
     <div class="col-sm-4">
       <div class="row Paciente-row">
         <div class="col-sm-12 Paciente-nombre">
             Paciente: {{ pacienteCtrl.paciente.nombre }}
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="row Paciente-row">
         <div class="col-sm-12">
           Estado:
           <div class="Main-status-ball Main-status-ball--{{ pacienteCtrl.paciente.estado.estado}}" ></div>
         </div>
       </div>
+    </div>
+    <div class="col-sm-4">
       <div class="row Paciente-row">
         <div class="col-sm-12">
           <p><strong>Movimiento</strong></p>
           {{ pacienteCtrl.paciente.estado.movimiento === 1 ? 'En Movimiento' : 'Inactivo' }}
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
       <div class="row Paciente-row">
         <div class="col-sm-12">
           <h5>Latidos por minuto</h5>
@@ -30,6 +42,8 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-sm-4">
       <div class="row Paciente-row">
         <div class="col-sm-12">
           <h5>Temperatura</h5>
@@ -44,15 +58,9 @@
           </div>
         </div>
       </div>
-      <div class="row Paciente-row">
-        <div class="col-sm-12">
-          <p><strong>Temperatura Ambiente</strong></p>
-          Actual: {{ pacienteCtrl.paciente.estado.tempAmbiente }}
-        </div>
-      </div>
     </div>
-    <div class="col-sm-8">
+  </div>
+  <div class="row">
       <ecg valor="pacienteCtrl.paciente.estado.pulso" x="pacienteCtrl.paciente.estado.x" beep="pacienteCtrl.paciente.estado.beep"></ecg>
-    </div>
   </div>
 </div>

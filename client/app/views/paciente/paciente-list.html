@@ -1,0 +1,53 @@
+<div class="container">
+  <a class="btn btn-raised btn-primary"  ui-sref="paciente-crear">Crear Paciente</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>
+          Nombre
+        </th>
+        <th>
+          Especie
+        </th>
+        <th>
+          Apoderado
+        </th>
+        <th>
+          Año nacimiento
+        </th>
+        <th>
+          Sexo
+        </th>
+        <th>
+          Acción
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="paciente in $ctrl.pacientes">
+        <td>
+          {{ paciente.nombre}}
+        </td>
+        <td>
+          {{ paciente.especie.nombreComun}}
+        </td>
+        <td>
+          {{ paciente.apoderado.nombre}} {{ paciente.apoderado.apellido }}
+        </td>
+        <td>
+          {{ paciente.annoNacimiento}}
+        </td>
+        <td>
+          {{ paciente.sexo}}
+        </td>
+        <td>
+          <div class="row">
+            <a class="btn btn-xs  btn-raised btn-primary col-sm-5" ui-sref="paciente-edit({id: paciente.id})"><i class="fa fa-pencil"></i></a>
+            <button class="btn btn-xs  btn-raised btn-danger col-sm-offset-1 col-sm-5" ng-click="$ctrl.eliminarPaciente(paciente)"><i class="fa fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

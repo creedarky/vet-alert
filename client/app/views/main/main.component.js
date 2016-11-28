@@ -29,11 +29,12 @@ export class MainController {
       return;
     }
     paciente[data.tipo] = Object.assign({}, paciente[data.tipo], data);
-    console.log(paciente[data.tipo]);
   };
 
   updatePatients = (pacientes) => {
+    console.log('pacientes actualizados', pacientes);
     this.pacientes = pacientes;
+    this.pacienteService.setPacientes(pacientes);
   };
 
   onClick(paciente) {

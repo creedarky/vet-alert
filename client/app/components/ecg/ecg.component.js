@@ -15,8 +15,8 @@ export default class ecgComponent {
         bottom: 10,
         left: 10
       },
-      height: 300,
-      width: 450,
+      height: 450,
+      width: 600,
 
       xMin: 0,
       xMax: 3000,
@@ -85,7 +85,7 @@ export default class ecgComponent {
     this.yGridGenerator = d3.svg.axis()
       .scale(this.yScale)
       .orient('left')
-      .ticks(4)
+      .ticks(5)
       .tickSize(-this.options.width)
       .tickFormat('');
     this.yGrid = this.canvas
