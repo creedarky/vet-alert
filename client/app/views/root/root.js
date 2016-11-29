@@ -4,6 +4,7 @@ import uiRouter from 'angular-ui-router';
 export class RootController {
   pacientes = [];
   alertas = [];
+  audio = new Audio('/assets/audio/alert.ogg');
   /*@ngInject*/
   constructor(socket, pacienteService, Notification) {
     this.socket = socket.socket;
@@ -34,8 +35,9 @@ export class RootController {
   }
 
   agregarAlerta(paciente, alerta) {
-    let mensaje = `<b>${paciente.nombre}</b><br/> ${alerta.mensajes.map(m => `${m}<br/>`)}`;
+    let mensaje = `<b>${paciente.nombre}</b><br/> ${alerta.mensajes.join('<br/>')}`;
     this.Notification({message: mensaje}, alerta.tipo);
+    this.audio.play();
   }
 
   updatePatients(pacientes) {
