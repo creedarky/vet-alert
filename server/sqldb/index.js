@@ -60,7 +60,8 @@ db.Permiso.belongsToMany(db.Rol, {
 });
 
 db.insertLog = (req) => {
-  db.sequelize.query(`CALL sp_identifica_trx(${req.user.id})`);
+  db.sequelize.query(`CALL sp_identifica_trx(${req.user.id})`)
+    .catch(e => console.error(e));
 };
 
 module.exports = db;
