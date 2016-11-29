@@ -10,7 +10,6 @@ export default class EditEspecieComponent {
   constructor(especieService, $stateParams, $state) {
     this.especieService = especieService;
     this.especie = this.especieService.get({especieId: $stateParams.id});
-    console.log(this.especie);
     this.$state = $state;
   }
 

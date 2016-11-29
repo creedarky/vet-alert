@@ -17,7 +17,6 @@ export default class EditPacienteComponent {
       .then(() => {
         this.monitor = this.monitores.find(m => m.id === this.paciente.id_monitor);
         this.apoderado = this.apoderados.find(a => a.id === this.paciente.id_apoderado);
-        console.log(this.apoderado);
         this.especie = this.especies.find(e => e.id === this.paciente.id_especie);
       });
     this.$state = $state;

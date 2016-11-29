@@ -14,7 +14,6 @@ export default class ComunaComponent {
   constructor(comunaService, ciudadService) {
     this.comunaService = comunaService;
     this.ciudades = ciudadService.query();
-    console.log(this.ciudades);
   }
 
   crearComuna(form) {

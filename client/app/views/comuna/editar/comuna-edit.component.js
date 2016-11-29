@@ -13,7 +13,6 @@ export default class EditComunaComponent {
         this.ciudad = this.ciudades.find(c => c.id === this.comuna.id_ciudad);
         this.comuna.id_ciudad = this.ciudad.id;
       });
-      console.log(this.ciudades);
     });
     this.$state = $state;
   }

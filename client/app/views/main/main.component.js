@@ -32,7 +32,6 @@ export class MainController {
   };
 
   updatePatients = (pacientes) => {
-    console.log('pacientes actualizados', pacientes);
     this.pacientes = pacientes;
     this.pacienteService.setPacientes(pacientes);
   };

@@ -10,7 +10,6 @@ export class ReporteMonitoreoComponent {
   constructor($http) {
     $http.get('/api/reportes/monitoreo').then(({ data }) => {
       this.monitoreos = data;
-      console.log(data);
     })
   }
 }

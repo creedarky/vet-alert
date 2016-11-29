@@ -7,7 +7,6 @@ export default class ComunaListComponent {
 
   constructor(comunaService) {
     this.comunas = comunaService.query();
-    console.log(this.comunas);
   }
 
   eliminarComuna(comuna) {
