@@ -8,7 +8,10 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-
+    <link rel='apple-touch-icon' type='image/png' href='/assets/images/logo.png'> <!-- iPhone -->
+    <link rel='apple-touch-icon' type='image/png' sizes='72x72' href='/assets/images/logo.png'> <!-- iPad -->
+    <link rel='apple-touch-icon' type='image/png' sizes='114x114' href='/assets/images/logo.png'> <!-- iPhone4 -->
+    <link rel='icon' type='image/png' href='/assets/images/logo.png'>
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 </head>
 <body>
@@ -28,6 +31,6 @@
     </script>
 
     <navbar></navbar>
-    <div ui-view=""></div>
+    <div ui-view="" class="bg"></div>
 </body>
 </html>
