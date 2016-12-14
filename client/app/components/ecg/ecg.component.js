@@ -23,7 +23,7 @@ export default class ecgComponent {
       xMajorTicks: 1000,
 
       yMin: -512,
-      yMax: 768
+      yMax: 1024
     };
     this.$element = $element;
     this.initSvg();
