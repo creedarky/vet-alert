@@ -16,7 +16,7 @@ Usuario y password de la base de datos debe ser:
 > user: `root`
 > password: `mypass`
 
-Entrar por la consola a la ruta del proyecto y ejecutar los siguientes comandos
+Entrar por la consola a la raiz del proyecto y ejecutar los siguientes comandos
 
 ```sh
 npm install
