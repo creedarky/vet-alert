@@ -16,14 +16,14 @@ export default class ecgComponent {
         left: 10
       },
       height: 450,
-      width: 600,
+      width: 750,
 
       xMin: 0,
-      xMax: 3000,
+      xMax: 7000,
       xMajorTicks: 1000,
 
-      yMin: -512,
-      yMax: 1024
+      yMin: -1024,
+      yMax: 1512
     };
     this.$element = $element;
     this.initSvg();
@@ -74,7 +74,7 @@ export default class ecgComponent {
     this.yAxisGenerator = d3.svg.axis()
       .scale(this.yScale)
       .orient('left')
-      .ticks(4)
+      .ticks(0)
       .tickFormat('');
     this.yAxis = this.canvas
       .append('g')
@@ -88,17 +88,17 @@ export default class ecgComponent {
       .ticks(5)
       .tickSize(-this.options.width)
       .tickFormat('');
-    this.yGrid = this.canvas
-      .append('g')
-      .classed('jke-ecgChart-grid-y', true)
-      .call(this.yGridGenerator);
+    // this.yGrid = this.canvas
+    //   .append('g')
+    //   .classed('jke-ecgChart-grid-y', true)
+    //   .call(this.yGridGenerator);
 
 
     // Create the x-axis.
     this.xAxisGenerator = d3.svg.axis()
       .scale(this.xScale)
       .orient('bottom')
-      .ticks(this.options.xMax / this.options.xMajorTicks)
+      .ticks(0)
       .tickFormat('');
     this.xAxis = this.canvas
       .append('g')
@@ -110,7 +110,7 @@ export default class ecgComponent {
     this.xGridGenerator = d3.svg.axis()
       .scale(this.xScale)
       .orient('top')
-      .ticks(this.options.xMax / this.options.xMajorTicks)
+      .ticks(1)
       .tickSize(-this.options.height)
       .tickFormat('');
     this.xGrid = this.canvas

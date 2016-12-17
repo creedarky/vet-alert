@@ -110,7 +110,9 @@ exports.default = function (socketio, cache) {
     if (data.latidos) {
       monitor.latidos.push(data.latidos);
       monitor.latido = data.latidos;
-    } else if (data.temperatura) {
+    }
+
+    if (data.temperatura) {
       monitor.temperaturas.push(data.temperatura);
       monitor.temperatura = data.temperatura;
       monitor.movimiento = data.movimiento;
