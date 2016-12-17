@@ -206,6 +206,7 @@ export default function(socketio, cache) {
     if (sp[response.serialNumber]) {
       return;
     }
+
     // connectToArduino(response.port);
     sp[response.serialNumber] = new SerialPort(`${prefix}${response.port}`, {
       baudrate: 115200,
