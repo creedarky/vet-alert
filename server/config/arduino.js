@@ -25,7 +25,6 @@ export default function(socketio, cache) {
   let monitorData = {};
   let monitoresActivos = {};
   cache.emitter.on('update-patients', (pacientesActualizados) => {
-    // console.log('pacientes actualizados????/????')
     pacientes = pacientesActualizados;
     pacientes.forEach(p => {
       const currentMonitor = monitorData[p.monitor.id];
