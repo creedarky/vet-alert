@@ -57,11 +57,7 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 /* inject:scss */
 @import 'components/ecg/ecg';
 @import 'components/paciente/paciente';
-@import 'views/admin/admin';
-@import 'views/apoderado/apoderado';
-@import 'views/especie/especie';
 @import 'views/main/main';
-@import 'views/reporte/reporte-monitoreo';
 @import '../components/footer/footer';
 @import '../components/modal/modal';
 /* endinject */

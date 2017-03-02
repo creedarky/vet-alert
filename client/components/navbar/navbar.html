@@ -15,7 +15,7 @@
             <a ui-sref="{{item.state}}">{{item.title}}</a>
         </li>
 
-        <li ng-if="$ctrl.isAdmin()" uib-dropdown is-open="$ctrl.mantenedoresOpen">
+        <li ng-if="false" uib-dropdown is-open="$ctrl.mantenedoresOpen">
           <a href id="simple-dropdown" uib-dropdown-toggle>
             Mantenedores
           </a>
@@ -27,9 +27,9 @@
             <li role="menuitem"><a ui-sref="comuna-list" ui-sref-active="active">Comunas</a></li>
           </ul>
         </li>
-        <li ng-if="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="reporteMonitoreo">Reporte Monitoreo</a></li>
+        <li ng-if="false" ui-sref-active="active"><a ui-sref="reporteMonitoreo">Reporte Monitoreo</a></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right" ng-hide="true">
         <li ng-if="!$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="login">Login</a></li>
         <li ng-if="$ctrl.isLoggedIn()"><p class="navbar-text">Hola {{ $ctrl.getCurrentUser().nombre }} {{ $ctrl.getCurrentUser().apellido }}</p> </li>
         <li ng-if="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="settings"><span class="glyphicon glyphicon-cog"></span></a></li>

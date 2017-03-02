@@ -5,8 +5,8 @@
 /* eslint-disable */
 
 'use strict';
-import sqldb from '../sqldb';
-const { Especie, Apoderado, Paciente, User } = sqldb;
+// import sqldb from '../sqldb';
+// const { Especie, Apoderado, Paciente, User } = sqldb;
 //
 // const permisoPromise = Permiso.sync()
 //   .then(() => Permiso.destroy({where: {}}))

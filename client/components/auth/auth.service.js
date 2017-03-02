@@ -144,13 +144,17 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Promise}
      */
     isLoggedIn(callback) {
-      return Auth.getCurrentUser(undefined)
-        .then(user => {
-          let is = _.get(user, 'rol');
-
-          safeCb(callback)(is);
-          return is;
-        });
+      return new Promise(() => {
+        safeCb(callback)(true);
+        return true;
+      });
+      // return Auth.getCurrentUser(undefined)
+      //   .then(user => {
+      //     let is = _.get(user, 'rol');
+      //
+      //     safeCb(callback)(is);
+      //     return is;
+      //   });
     },
 
     /**
@@ -159,7 +163,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
      * @return {Bool}
      */
     isLoggedInSync() {
-      return !!_.get(currentUser, 'email');
+      return true
     },
 
     /**

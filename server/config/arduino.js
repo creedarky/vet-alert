@@ -1,6 +1,6 @@
 import SerialPort from 'serialport';
 import os from 'os';
-import { Monitor, MonitoreoPaciente } from '../sqldb';
+// import { Monitor, MonitoreoPaciente } from '../sqldb';
 import ArduinoScanner from '../scanner';
 import moment from 'moment';
 import isNil from 'lodash/isNil';
@@ -39,12 +39,6 @@ export default function(socketio, cache) {
     if (monitoresActivos[idMonitor]) {
       return;
     }
-    Monitor.upsert(
-      {
-        id: idMonitor,
-        activo: true
-      }
-    );
     monitoresActivos[idMonitor] = idMonitor
   };
 
@@ -130,15 +124,15 @@ export default function(socketio, cache) {
       monitor.latidos = [];
       monitor.temperaturas = [];
 
-      MonitoreoPaciente.create({
-        promedioTemperatura: promedios.promedioTemp,
-        promedioPpm: promedios.promedioPpm,
-        estadoMovimiento: monitor.movimiento,
-        estadoTemperatura: monitor.temperatura,
-        estadoPaciente: monitor.estado,
-        estadoPpm: monitor.latido,
-        id_paciente: monitor.paciente.id
-      });
+      // MonitoreoPaciente.create({
+      //   promedioTemperatura: promedios.promedioTemp,
+      //   promedioPpm: promedios.promedioPpm,
+      //   estadoMovimiento: monitor.movimiento,
+      //   estadoTemperatura: monitor.temperatura,
+      //   estadoPaciente: monitor.estado,
+      //   estadoPpm: monitor.latido,
+      //   id_paciente: monitor.paciente.id
+      // });
     }
 
     setMonitor(monitor);

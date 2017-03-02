@@ -53,7 +53,6 @@ export default angular.module('webappApp.views.root', [uiRouter])
     $stateProvider.state('root', {
       abstract: true,
       template: require('./root.html'),
-      authenticate: true,
       controller: RootController,
       controllerAs: 'rootCtrl'
     });

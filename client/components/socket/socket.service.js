@@ -9,7 +9,7 @@ function Socket(socketFactory, Auth) {
 
   const ioSocket = io('', {
     // Send auth token on connection, you will need to DI the Auth service above
-    query: `token=${Auth.getToken()}`,
+    // query: `token=${Auth.getToken()}`,
     path: '/socket.io-client'
   });
 
