@@ -17,9 +17,21 @@ var setCurrentPatients = function setCurrentPatients(data) {
   emitter.emit('update-patients', data);
 };
 
+var setPatient = function setPatient(data) {
+  var index = currentData.findIndex(function (d) {
+    return d.monitor.idMonitor === data.monitor.idMonitor;
+  });
+  if (index < 0) {
+    return;
+  }
+  currentData[index] = data;
+  emitter.emit('update-patients', currentData);
+};
+
 exports.default = {
   emitter: emitter,
   getCurrentPatients: getCurrentPatients,
-  setCurrentPatients: setCurrentPatients
+  setCurrentPatients: setCurrentPatients,
+  setPatient: setPatient
 };
 //# sourceMappingURL=index.js.map

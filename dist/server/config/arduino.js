@@ -19,7 +19,7 @@ exports.default = function (socketio, cache) {
   var monitorData = {};
   var monitoresActivos = {};
   cache.emitter.on('update-patients', function (pacientesActualizados) {
-    // console.log('pacientes actualizados????/????')
+    console.log('### pacientes', pacientesActualizados);
     pacientes = pacientesActualizados;
     pacientes.forEach(function (p) {
       var currentMonitor = monitorData[p.monitor.id];
@@ -30,14 +30,20 @@ exports.default = function (socketio, cache) {
     socketio.sockets.emit('updated-patients', pacientesActualizados);
   });
 
+  console.log('###', socketio.sockets.on, socketio.on);
+
+  socketio.on('edit-paciente', function (paciente) {
+    console.log('socketio.on', paciente);
+  });
+
+  socketio.sockets.on('edit-paciente', function (paciente) {
+    console.log('socketio.on', paciente);
+  });
+
   var createMonitor = function createMonitor(idMonitor) {
     if (monitoresActivos[idMonitor]) {
       return;
     }
-    _sqldb.Monitor.upsert({
-      id: idMonitor,
-      activo: true
-    });
     monitoresActivos[idMonitor] = idMonitor;
   };
 
@@ -124,15 +130,15 @@ exports.default = function (socketio, cache) {
       monitor.latidos = [];
       monitor.temperaturas = [];
 
-      _sqldb.MonitoreoPaciente.create({
-        promedioTemperatura: promedios.promedioTemp,
-        promedioPpm: promedios.promedioPpm,
-        estadoMovimiento: monitor.movimiento,
-        estadoTemperatura: monitor.temperatura,
-        estadoPaciente: monitor.estado,
-        estadoPpm: monitor.latido,
-        id_paciente: monitor.paciente.id
-      });
+      // MonitoreoPaciente.create({
+      //   promedioTemperatura: promedios.promedioTemp,
+      //   promedioPpm: promedios.promedioPpm,
+      //   estadoMovimiento: monitor.movimiento,
+      //   estadoTemperatura: monitor.temperatura,
+      //   estadoPaciente: monitor.estado,
+      //   estadoPpm: monitor.latido,
+      //   id_paciente: monitor.paciente.id
+      // });
     }
 
     setMonitor(monitor);
@@ -237,8 +243,6 @@ var _serialport2 = _interopRequireDefault(_serialport);
 var _os = require('os');
 
 var _os2 = _interopRequireDefault(_os);
-
-var _sqldb = require('../sqldb');
 
 var _scanner = require('../scanner');
 

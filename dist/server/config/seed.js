@@ -5,17 +5,8 @@
 /* eslint-disable */
 
 'use strict';
-
-var _sqldb = require('../sqldb');
-
-var _sqldb2 = _interopRequireDefault(_sqldb);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Especie = _sqldb2.default.Especie;
-var Apoderado = _sqldb2.default.Apoderado;
-var Paciente = _sqldb2.default.Paciente;
-var User = _sqldb2.default.User;
+// import sqldb from '../sqldb';
+// const { Especie, Apoderado, Paciente, User } = sqldb;
 //
 // const permisoPromise = Permiso.sync()
 //   .then(() => Permiso.destroy({where: {}}))
