@@ -16,14 +16,24 @@
         <div class="Main-status-data-container">
           <span class="Main-status-label">Especie</span>
           <span class="Main-status-value">
-            {{ paciente.especie.nombreComun }}
+            {{ paciente.especie.nombre }}
           </span>
         </div>
-        <button class="btn btn-raised btn-primary">Ver Estado</button>
+        <div class="row">
+          <div class="col-sm-6">
+            <button class="btn btn-raised btn-primary">Ver Estado</button>
+          </div>
+          <div class="col-sm-6">
+            <button class="btn btn-raised btn-primary" ng-click="$ctrl.onEdit($event, paciente)">Editar</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-sm-8" ng-if="$ctrl.paciente">
+  <div class="col-sm-8" ng-if="$ctrl.paciente && !$ctrl.editando">
     <paciente paciente="$ctrl.paciente"></paciente>
+  </div>
+  <div class="col-sm-8" ng-if="$ctrl.paciente && $ctrl.editando">
+    <editar paciente="$ctrl.paciente" especie="$ctrl.paciente.especie"></editar>
   </div>
 </div>

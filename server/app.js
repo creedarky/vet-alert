@@ -27,17 +27,35 @@ const socketio = require('socket.io')(server, {
 require('./config/express').default(app);
 require('./routes').default(app);
 
+app.route('/api/pacientes')
+  .put((req, res) => {
+    cache.setPatient(req.body)
+    res.sendStatus(200);
+  });
+
 // Start server
 function startServer() {
   const pacientes = [
     {
-      id_monitor: 1,
-      active: true,
+      idPaciente: 1,
+      nombre: 'Mascota',
+      especie: {
+        nombre: 'Perro',
+        minPpm: 80,
+        maxPpm: 120,
+        minTemp: 38,
+        maxTemp: 40,
+      },
+      monitor: {
+        idMonitor: 1,
+        active: true,
+      }
     }
   ];
   cache.setCurrentPatients(pacientes);
   require('./config/socketio').default(socketio, cache);
   require('./config/arduino').default(socketio, cache);
+
 
   app.angularFullstack = server.listen(config.port, config.ip, function() {
     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));

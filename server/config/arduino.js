@@ -1,6 +1,5 @@
 import SerialPort from 'serialport';
 import os from 'os';
-// import { Monitor, MonitoreoPaciente } from '../sqldb';
 import ArduinoScanner from '../scanner';
 import moment from 'moment';
 import isNil from 'lodash/isNil';
@@ -25,6 +24,7 @@ export default function(socketio, cache) {
   let monitorData = {};
   let monitoresActivos = {};
   cache.emitter.on('update-patients', (pacientesActualizados) => {
+    console.log('### pacientes', pacientesActualizados);
     pacientes = pacientesActualizados;
     pacientes.forEach(p => {
       const currentMonitor = monitorData[p.monitor.id];
@@ -34,6 +34,17 @@ export default function(socketio, cache) {
     });
     socketio.sockets.emit('updated-patients', pacientesActualizados);
   });
+
+  console.log('###', socketio.sockets.on, socketio.on);
+
+  socketio.on('edit-paciente', (paciente) => {
+    console.log('socketio.on', paciente);
+  });
+
+  socketio.sockets.on('edit-paciente', (paciente) => {
+    console.log('socketio.on', paciente);
+  });
+
 
   const createMonitor = (idMonitor) => {
     if (monitoresActivos[idMonitor]) {

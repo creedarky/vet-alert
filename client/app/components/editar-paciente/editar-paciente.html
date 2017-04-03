@@ -1,0 +1,75 @@
+<div class="well" style="padding: 3rem;">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Editar</h1>
+    </div>
+    <div class="col-sm-12">
+      <form class="form" name="pacienteForm" ng-submit="pacienteCtrl.editarPaciente(pacienteForm)" novalidate>
+        <div class="row">
+          <div class="form-group col-sm-6" ng-class="{'has-success': pacienteForm.nombre.$valid && pacienteCtrl.submitted,
+                                             'has-error'  : pacienteForm.nombre.$invalid && pacienteCtrl.submitted}">
+            <label>Nombre</label>
+            <input type="text" name="nombre" class="form-control" ng-model="pacienteCtrl.editPaciente.nombre" required>
+            <p class="help-block" ng-show="pacienteForm.nombre.$error.required && pacienteCtrl.submitted">
+              Se requiere nombre
+            </p>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-success': pacienteForm.especie.nombre.$valid && pacienteCtrl.submitted,
+                                           'has-error'  : pacienteForm.especie.nombre.$invalid && pacienteCtrl.submitted }">
+          <label>Nombre Especie</label>
+          <input type="text" name="nombre" class="form-control" ng-model="pacienteCtrl.editEspecie.nombre" required>
+
+          <p class="help-block" ng-show="pacienteForm.especie.nombre.$error.required && pacienteCtrl.submitted">
+            Se requiere nombre comun
+          </p>
+        </div>
+
+
+        <div class="form-group" ng-class="{'has-success': pacienteForm.especie.minPpm.$valid && pacienteCtrl.submitted,
+                                           'has-error'  : pacienteForm.especie.minPpm.$invalid && pacienteCtrl.submitted }">
+          <label><label>M&iacute;nimo de latidos por minuto (PPM)</label></label>
+          <input type="number" name="minPpm" class="form-control" ng-model="pacienteCtrl.editEspecie.minPpm" required>
+          <p class="help-block" ng-show="pacienteForm.especie.minPpm.$error.required && pacienteCtrl.submitted">
+            Se requiere mínimo de ppm
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': pacienteForm.especie.maxPpm.$valid && pacienteCtrl.submitted,
+                                           'has-error'  : pacienteForm.especie.maxPpm.$invalid && pacienteCtrl.submitted }">
+          <label><label>M&aacute;ximo de latidos por minuto (PPM)</label></label>
+          <input type="number" name="maxPpm" class="form-control" ng-model="pacienteCtrl.editEspecie.maxPpm" required>
+          <p class="help-block" ng-show="pacienteForm.especie.maxPpm.$error.required && pacienteCtrl.submitted">
+            Se requiere máximo de ppm
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': pacienteForm.especie.minTemp.$valid && pacienteCtrl.submitted,
+                                           'has-error'  : pacienteForm.especie.minTemp.$invalid && pacienteCtrl.submitted }">
+          <label><label>Temperatura corporal m&iacute;nima(°C)</label></label>
+          <input type="number" name="minTemp" class="form-control" ng-model="pacienteCtrl.editEspecie.minTemp" required>
+          <p class="help-block" ng-show="pacienteForm.especie.minTemp.$error.required && pacienteCtrl.submitted">
+            Se requiere temperatura mínima
+          </p>
+        </div>
+
+        <div class="form-group" ng-class="{'has-success': pacienteForm.especie.maxTemp.$valid && pacienteCtrl.submitted,
+                                           'has-error'  : pacienteForm.especie.maxTemp.$invalid && pacienteCtrl.submitted }">
+
+          <label><label>Temperatura corporal m&aacute;xima(°C)</label></label>
+          <input type="number" name="maxTemp" class="form-control" ng-model="pacienteCtrl.editEspecie.maxTemp" required>
+          <p class="help-block" ng-show="pacienteForm.especie.maxTemp.$error.required && pacienteCtrl.submitted">
+            Se requiere temperatura máxima
+          </p>
+        </div>
+
+        <div>
+          <button class="btn btn-raised btn-primary btn-lg btn-login" type="submit">
+            Guardar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
