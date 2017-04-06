@@ -27,9 +27,9 @@ export default function(socketio, cache) {
     console.log('### pacientes', pacientesActualizados);
     pacientes = pacientesActualizados;
     pacientes.forEach(p => {
-      const currentMonitor = monitorData[p.monitor.id];
+      const currentMonitor = monitorData[p.monitor.idMonitor];
       if (currentMonitor && currentMonitor.paciente.id !== p.id) {
-        monitorData[p.monitor.id] = null;
+        monitorData[p.monitor.idMonitor] = null;
       }
     });
     socketio.sockets.emit('updated-patients', pacientesActualizados);
@@ -101,7 +101,7 @@ export default function(socketio, cache) {
       monitor = monitorData[data.idMonitor];
     } else {
       let paciente = pacientes.find(p => {
-        return p.monitor.id === data.idMonitor
+        return p.monitor.idMonitor === data.idMonitor
       });
       monitorData[data.idMonitor] = {
         id: data.idMonitor,
