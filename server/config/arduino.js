@@ -24,11 +24,10 @@ export default function(socketio, cache) {
   let monitorData = {};
   let monitoresActivos = {};
   cache.emitter.on('update-patients', (pacientesActualizados) => {
-    console.log('### pacientes', pacientesActualizados);
     pacientes = pacientesActualizados;
     pacientes.forEach(p => {
       const currentMonitor = monitorData[p.monitor.idMonitor];
-      if (currentMonitor && currentMonitor.paciente.id !== p.id) {
+      if (currentMonitor && currentMonitor.paciente.idPaciente !== p.idPaciente) {
         monitorData[p.monitor.idMonitor] = null;
       }
     });
@@ -79,7 +78,7 @@ export default function(socketio, cache) {
       let actualizarAlerta = isNil(alerta.fecha) || moment().diff(moment(alerta.fecha), 'minutes') >= 5 || (estado !== alerta.tipo && estado === ESTADOS.DANGER);
       let fecha = new Date();
       monitor.alerta = actualizarAlerta ? {
-        id: `${monitor.id}${monitor.paciente.id}${fecha.getTime()}`,
+        id: `${monitor.id}${monitor.paciente.idPaciente}${fecha.getTime()}`,
         fecha,
         mensajes,
         tipo: estado
@@ -88,7 +87,7 @@ export default function(socketio, cache) {
       // TODO aca deberia mandar notificacion
     }
     data.alerta = monitor.alerta;
-    data.idPaciente = paciente.id;
+    data.idPaciente = paciente.idPaciente;
     data.promedioTemp = monitor.promedioTemp;
     data.promedioPpm = monitor.promedioPpm;
     // console.log('to emit', data);
